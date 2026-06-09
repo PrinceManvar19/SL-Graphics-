@@ -1,0 +1,34 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF2200;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#CC0000;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- S Letter -->
+  <path d="M 280 380 Q 280 300 360 300 Q 420 300 440 340 L 420 380 Q 410 360 380 360 Q 340 360 340 380 Q 340 400 360 410 L 420 440 Q 460 460 460 500 Q 460 560 400 580 Q 340 600 280 580 L 290 530 Q 330 550 370 550 Q 410 550 410 530 Q 410 510 390 500 L 330 470 Q 280 440 280 380 Z" fill="url(#redGradient)" filter="url(#glow)"/>
+  
+  <!-- L Letter -->
+  <path d="M 520 300 L 580 300 L 580 540 Q 580 580 540 590 L 480 590 L 480 540 L 540 540 Q 560 540 560 520 L 560 320 L 520 320 Z" fill="url(#redGradient)" filter="url(#glow)"/>
+  
+  <!-- Star Spark Top Right -->
+  <g transform="translate(680, 270)">
+    <polygon points="0,-40 10,-10 40,-5 15,15 20,45 0,25 -20,45 -15,15 -40,-5 -10,-10" fill="#FF2200" filter="url(#glow)"/>
+  </g>
+  
+  <!-- Star Spark Bottom Right -->
+  <g transform="translate(800, 650)">
+    <polygon points="0,-25 6,-6 25,-3 9,9 12,28 0,15 -12,28 -9,9 -25,-3 -6,-6" fill="#FF2200" filter="url(#glow)"/>
+  </g>
+  
+  <!-- Black shadow/depth -->
+  <path d="M 280 380 Q 280 300 360 300 Q 420 300 440 340 L 420 380 Q 410 360 380 360 Q 340 360 340 380 Q 340 400 360 410 L 420 440 Q 460 460 460 500 Q 460 560 400 580 Q 340 600 280 580 L 290 530 Q 330 550 370 550 Q 410 550 410 530 Q 410 510 390 500 L 330 470 Q 280 440 280 380 Z" fill="#000000" opacity="0.3" transform="translate(8, 8)"/>
+</svg>
