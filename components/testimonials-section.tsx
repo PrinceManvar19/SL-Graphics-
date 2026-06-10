@@ -20,26 +20,30 @@ const testimonials = [
 
 export function TestimonialsSection() {
   return (
-    <section className="bg-[#111111] py-28 md:py-40">
+    <section className="snap-section flex min-h-[80vh] items-center bg-[var(--bg)] py-24">
       <div className="container-x">
-        <ScrollReveal className="mb-20 text-center">
-          <h2 className="font-display text-6xl leading-none tracking-[-0.06em] text-[#E8FF00] md:text-8xl">
-            Clients Don&apos;t Lie.
+        <ScrollReveal className="mb-16 text-center">
+          <h2 className="font-display text-7xl uppercase leading-none text-[var(--text)] md:text-[80px]">
+            CLIENTS DON&apos;T LIE.
           </h2>
+          <div className="mt-4 text-xl text-[var(--gold)]" aria-label="5 star rating">
+            ★★★★★
+          </div>
         </ScrollReveal>
 
-        <div className="grid gap-10 md:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (
             <ScrollReveal key={testimonial.name} delay={index * 0.06}>
-              <figure className="border-t border-[#1E1E1E] pt-8">
-                <div className="mb-6 text-[#E8FF00]" aria-label="5 star rating">
+              <figure className="border-t border-[var(--border)] pt-8">
+                <div className="mb-6 text-[var(--gold)]" aria-label="5 star rating">
                   ★★★★★
                 </div>
-                <blockquote className="text-xl leading-relaxed text-[#F0EDE8]">
+                <blockquote className="text-[17px] italic leading-relaxed text-[rgba(242,240,236,0.65)]">
                   “{testimonial.quote}”
                 </blockquote>
-                <figcaption className="mt-8 text-sm uppercase tracking-[0.15em] text-[#555555]">
-                  {testimonial.name} · {testimonial.company}
+                <figcaption className="mt-8">
+                  <div className="font-display text-sm uppercase text-[var(--text)]">{testimonial.name}</div>
+                  <div className="mt-1 text-xs uppercase tracking-[0.15em] text-[var(--muted)]">{testimonial.company}</div>
                 </figcaption>
               </figure>
             </ScrollReveal>

@@ -2,25 +2,25 @@ import { ScrollReveal } from './scroll-reveal'
 
 export function CTABannerSection() {
   return (
-    <section className="bg-[#E8FF00] py-24 text-[#0A0A0A] md:py-32">
+    <section className="snap-section flex min-h-[80vh] items-center bg-[var(--brand)] py-24 text-white">
       <div className="container-x text-center">
         <ScrollReveal>
-          <h2 className="font-display text-[96px] leading-[0.8] tracking-[-0.08em] md:text-[200px]">
+          <h2 className="font-display text-[80px] uppercase leading-[0.78] md:text-[220px]">
             READY?
           </h2>
-          <p className="mt-8 text-lg md:text-xl">Let&apos;s make something people remember.</p>
+          <p className="mt-8 text-xl text-white/80">Let&apos;s make something people remember.</p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <a
               href="#contact"
-              className="border border-[#0A0A0A] bg-[#0A0A0A] px-7 py-4 text-xs font-medium uppercase tracking-[0.15em] text-[#F0EDE8] transition-colors duration-500 hover:bg-transparent hover:text-[#0A0A0A]"
+              className="rounded-[4px] border border-white px-7 py-4 font-display text-lg uppercase text-white transition-colors duration-300 hover:bg-white hover:text-[var(--brand)]"
             >
-              Start a Project
+              Start Project
             </a>
             <a
               href="https://wa.me/91XXXXXXXXXX"
               target="_blank"
               rel="noreferrer"
-              className="border border-[#0A0A0A] px-7 py-4 text-xs font-medium uppercase tracking-[0.15em] transition-colors duration-500 hover:bg-[#0A0A0A] hover:text-[#F0EDE8]"
+              className="rounded-[4px] border border-white px-7 py-4 font-display text-lg uppercase text-white transition-colors duration-300 hover:bg-white hover:text-[var(--brand)]"
             >
               WhatsApp Us
             </a>

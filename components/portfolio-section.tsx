@@ -1,43 +1,44 @@
 'use client'
 
 import { useState } from 'react'
+import { CharReveal } from './char-reveal'
 import { ScrollReveal } from './scroll-reveal'
 
 const projects = [
-  { title: 'Radhe Traders', type: 'Wholesale Brand', category: 'Logo', icon: 'SL', height: 'md:row-span-2', gradient: 'from-[#E8FF00] via-[#5b6400] to-[#111111]' },
-  { title: 'Viral Reels Pack', type: 'Creator Studio', category: 'Video', icon: '▶', height: '', gradient: 'from-[#7B2CBF] via-[#2a123d] to-[#111111]' },
-  { title: 'Diwali Campaign', type: 'Retail Campaign', category: 'Print', icon: '✦', height: '', gradient: 'from-[#E8FF00] via-[#7a4d00] to-[#111111]' },
-  { title: 'CloudFit Brand', type: 'Fitness Startup', category: 'Brand', icon: 'CF', height: 'md:row-span-2', gradient: 'from-[#F0EDE8] via-[#334155] to-[#111111]' },
-  { title: 'Highway Billboard', type: 'Real Estate', category: 'Print', icon: '◉', height: '', gradient: 'from-[#0EA5E9] via-[#064e3b] to-[#111111]' },
-  { title: 'Wedding Film Edit', type: 'Film Production', category: 'Video', icon: '◼', height: '', gradient: 'from-[#EC4899] via-[#4c1d3f] to-[#111111]' },
+  { title: 'Radhe Traders', type: 'Wholesale Brand', category: 'Logo', gradient: 'linear-gradient(135deg, #1A0A09, #3D0D0A)' },
+  { title: 'Viral Reels Pack', type: 'Creator Studio', category: 'Video', gradient: 'linear-gradient(135deg, #0A0D1A, #0D1A3D)' },
+  { title: 'Diwali Campaign', type: 'Retail Poster', category: 'Poster', gradient: 'linear-gradient(135deg, #0D1A0A, #1A3D0D)' },
+  { title: 'CloudFit Identity', type: 'Fitness Startup', category: 'Brand', gradient: 'linear-gradient(135deg, #1A0A18, #2D0A3D)' },
+  { title: 'Highway Banner', type: 'Real Estate', category: 'Poster', gradient: 'linear-gradient(135deg, #1A0A09, #3D0D0A)' },
+  { title: 'Wedding Film Edit', type: 'Film Production', category: 'Video', gradient: 'linear-gradient(135deg, #0A0D1A, #0D1A3D)' },
 ]
 
-const filters = ['All', 'Logo', 'Video', 'Print', 'Brand']
+const filters = ['All', 'Logo', 'Video', 'Poster', 'Brand']
 
 export function PortfolioSection() {
   const [activeFilter, setActiveFilter] = useState('All')
-
   const filteredProjects = projects.filter((project) => activeFilter === 'All' || project.category === activeFilter)
 
   return (
-    <section id="work" className="py-28 md:py-40">
+    <section id="work" className="snap-section min-h-screen bg-[var(--bg)] py-24">
       <div className="container-x">
-        <ScrollReveal className="mb-12 grid gap-8 md:grid-cols-[0.35fr_1fr]">
-          <p className="label">/ Selected Work</p>
+        <ScrollReveal className="mb-10 grid gap-6 md:grid-cols-[0.32fr_1fr]">
+          <p className="label">/ SELECTED WORK</p>
           <div>
-            <h2 className="font-display max-w-4xl text-5xl leading-[0.95] tracking-[-0.05em] md:text-7xl">
-              Work That Moves People.
+            <h2 className="font-display max-w-4xl text-6xl uppercase leading-[0.92] md:text-7xl">
+              <CharReveal text="WORK THAT" as="span" className="block text-[var(--text)]" />
+              <CharReveal text="SPEAKS." as="span" className="block text-[var(--brand)]" delay={0.1} />
             </h2>
-            <div className="mt-10 flex flex-wrap gap-2">
+            <div className="mt-8 flex flex-wrap gap-2">
               {filters.map((filter) => (
                 <button
                   key={filter}
                   type="button"
                   onClick={() => setActiveFilter(filter)}
-                  className={`border px-4 py-2 text-xs font-medium uppercase tracking-[0.15em] transition-colors duration-500 ${
+                  className={`rounded-[4px] border px-4 py-2 text-[13px] font-medium uppercase tracking-[0.15em] transition-colors duration-300 ${
                     activeFilter === filter
-                      ? 'border-[#E8FF00] bg-[#E8FF00] text-[#0A0A0A]'
-                      : 'border-[#1E1E1E] text-[#555555] hover:border-[#E8FF00] hover:text-[#E8FF00]'
+                      ? 'border-[var(--brand)] bg-[var(--brand)] text-white'
+                      : 'border-[var(--border)] text-[var(--muted)] hover:border-[var(--brand)] hover:text-[var(--text)]'
                   }`}
                 >
                   {filter}
@@ -47,23 +48,21 @@ export function PortfolioSection() {
           </div>
         </ScrollReveal>
 
-        <div className="grid auto-rows-[260px] grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project, index) => (
-            <ScrollReveal key={project.title} delay={index * 0.04} className={project.height}>
-              <article className="group flex h-full flex-col border border-[#1E1E1E] bg-[#111111] transition-transform duration-500 hover:scale-[1.02] hover:border-[#E8FF00]">
-                <div className={`relative min-h-0 flex-1 bg-gradient-to-br ${project.gradient}`}>
-                  <div className="absolute inset-0 grid place-items-center font-display text-7xl text-[#F0EDE8]/80">
-                    {project.icon}
+            <ScrollReveal key={project.title} delay={index * 0.04}>
+              <article className="group overflow-hidden rounded-[8px] border border-[var(--border)] bg-[var(--surface)] transition duration-300 hover:border-[var(--brand)] hover:shadow-[0_0_24px_rgba(232,36,26,0.2)]">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <div className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.04]" style={{ background: project.gradient }}>
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(242,240,236,0.1),transparent_55%)]" />
                   </div>
-                  <div className="absolute inset-0 flex items-end justify-start bg-[#0A0A0A]/70 p-6 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                    <span className="text-sm font-medium uppercase tracking-[0.15em] text-[#E8FF00]">
-                      View Project →
-                    </span>
+                  <div className="absolute inset-0 grid translate-y-full place-items-center bg-[rgba(232,36,26,0.85)] text-sm font-medium text-white transition-transform duration-300 group-hover:translate-y-0">
+                    View Project →
                   </div>
                 </div>
-                <div className="border-t border-[#1E1E1E] p-5">
-                  <h3 className="text-lg font-bold">{project.title}</h3>
-                  <p className="mt-1 text-xs uppercase tracking-[0.15em] text-[#555555]">{project.type}</p>
+                <div className="border-t border-[var(--border)] p-5">
+                  <h3 className="text-[15px] font-medium text-[var(--text)]">{project.title}</h3>
+                  <p className="mt-1 text-xs uppercase tracking-[0.15em] text-[var(--muted)]">{project.type}</p>
                 </div>
               </article>
             </ScrollReveal>

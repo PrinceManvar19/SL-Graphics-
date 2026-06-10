@@ -1,63 +1,101 @@
+import Image from 'next/image'
+import { MessageCircle } from 'lucide-react'
+import { CharReveal } from './char-reveal'
+
 const stats = [
   { value: '200+', label: 'Projects' },
   { value: '50+', label: 'Brands' },
   { value: '5★', label: 'Rating' },
 ]
 
+const marqueeItems = [
+  'LOGO DESIGN',
+  '✦',
+  'BRAND IDENTITY',
+  '◈',
+  'POSTER DESIGN',
+  '◉',
+  'BANNER DESIGN',
+  '▶',
+  'REEL EDITING',
+  '◼',
+  'VIDEO PRODUCTION',
+  '✦',
+  'WEDDING FILMS',
+  '◈',
+  'YOUTUBE EDITING',
+]
+
 export function HeroSection() {
+  const loop = [...marqueeItems, ...marqueeItems]
+
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden pt-28">
-      <div className="container-x grid min-h-[calc(100vh-7rem)] items-center gap-16 lg:grid-cols-[1.35fr_0.9fr]">
-        <div>
-          <div className="max-w-5xl">
-            <p className="label mb-8">Creative Studio — UP, India</p>
-            <h1 className="font-display max-w-[980px] text-[56px] uppercase leading-[0.86] text-[#F0EDE8] md:text-[100px] xl:text-[132px]">
-              VISUALS
-              <span className="block whitespace-nowrap text-[#E8FF00]">THAT SELL.</span>
-            </h1>
-            <p className="mt-8 text-sm uppercase tracking-[0.22em] text-[#555555] md:text-base">
-              Logo · Brand · Motion · Film
-            </p>
+    <section className="snap-section relative flex min-h-screen items-center overflow-hidden bg-[var(--bg)] pt-16">
+      <div className="container-x grid min-h-[calc(100vh-4rem)] items-center gap-12 py-14 lg:grid-cols-[58%_42%]">
+        <div className="relative z-10">
+          <p className="label mb-7">CREATIVE STUDIO · UP, INDIA</p>
 
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="#work"
-                className="border border-[#F0EDE8]/30 px-6 py-3 text-xs font-medium uppercase tracking-[0.15em] transition-colors duration-500 hover:border-[#E8FF00] hover:text-[#E8FF00]"
-              >
-                View Work
-              </a>
-              <a
-                href="https://wa.me/91XXXXXXXXXX"
-                target="_blank"
-                rel="noreferrer"
-                className="border border-[#E8FF00] bg-[#E8FF00] px-6 py-3 text-xs font-medium uppercase tracking-[0.15em] text-[#0A0A0A] transition-colors duration-500 hover:bg-transparent hover:text-[#E8FF00]"
-              >
-                WhatsApp Us
-              </a>
-            </div>
+          <h1 className="font-display uppercase leading-[0.84]">
+            <CharReveal text="VISUALS" as="span" className="block text-[56px] text-[var(--text)] md:text-[110px] xl:text-[140px]" />
+            <CharReveal text="THAT SELL." as="span" className="block text-[56px] text-[var(--brand)] md:text-[110px] xl:text-[140px]" delay={0.08} />
+            <CharReveal text="LOGOS · BRANDS · REELS" as="span" className="mt-5 block text-[28px] leading-none text-[var(--muted)]" delay={0.16} />
+          </h1>
 
-            <div className="mt-12 flex flex-wrap gap-x-8 gap-y-3 text-sm uppercase tracking-[0.12em]">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <span className="font-display text-2xl text-[#E8FF00]">{stat.value}</span>
-                  <span className="ml-2 text-[#555555]">{stat.label}</span>
-                </div>
-              ))}
-            </div>
+          <div className="mt-10 flex max-w-xl divide-x divide-[var(--border)]">
+            {stats.map((stat) => (
+              <div key={stat.label} className="pr-8 pl-8 first:pl-0">
+                <div className="font-display text-4xl leading-none text-[var(--brand-bright)]">{stat.value}</div>
+                <div className="mt-1 text-sm text-[var(--muted)]">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 flex flex-wrap items-center gap-6">
+            <a
+              href="#work"
+              className="inline-flex h-12 items-center rounded-[4px] bg-[var(--brand)] px-7 text-sm font-medium text-white transition duration-300 hover:scale-[1.02] hover:bg-[var(--brand-bright)]"
+            >
+              View Our Work →
+            </a>
+            <a
+              href="https://wa.me/91XXXXXXXXXX"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-12 items-center gap-2 text-sm font-medium text-[var(--muted)] transition-colors duration-300 hover:text-[var(--text)]"
+            >
+              <MessageCircle size={18} />
+              WhatsApp Us
+            </a>
           </div>
         </div>
 
-        <div>
-          <div className="group relative ml-auto aspect-[4/5] w-full max-w-[430px] transition-transform duration-700 hover:rotate-2">
-            <div className="absolute left-[10%] top-[8%] h-[54%] w-[58%] border border-[#E8FF00] bg-[#E8FF00]/10 mix-blend-screen" />
-            <div className="absolute right-[2%] top-[23%] h-[42%] w-[48%] border border-[#F0EDE8]/20 bg-[#F0EDE8]/10 mix-blend-screen" />
-            <div className="absolute bottom-[8%] left-[18%] h-[38%] w-[60%] bg-[#111111] outline outline-1 outline-[#1E1E1E]" />
-            <div className="absolute bottom-[22%] right-[12%] h-28 w-28 rounded-full border border-[#E8FF00] bg-[#E8FF00]/20 mix-blend-screen" />
-            <div className="absolute left-0 top-[58%] h-1 w-full bg-[#E8FF00]" />
-            <div className="absolute right-[4%] top-[6%] text-[11px] uppercase tracking-[0.3em] text-[#555555] [writing-mode:vertical-rl]">
-              Design / Edit / Impact
-            </div>
-          </div>
+        <div className="carbon-lines relative hidden h-full min-h-[520px] items-center justify-center lg:flex">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(232,36,26,0.18)_0%,transparent_65%)]" />
+          <Image
+            src="/sl-logo.png"
+            alt="SL Graphics logo"
+            width={320}
+            height={320}
+            priority
+            className="logo-float relative z-10 w-[320px] object-contain"
+          />
+        </div>
+      </div>
+
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden border-y border-[var(--border)] bg-[var(--bg)] py-4">
+        <div className="marquee-track flex w-max whitespace-nowrap">
+          {loop.map((item, index) => {
+            const isMark = item.length === 1
+
+            return (
+              <span
+                key={`${item}-${index}`}
+                className={`px-4 font-display text-sm uppercase ${isMark ? 'text-[var(--brand)]' : 'text-[var(--muted)]'}`}
+              >
+                {item}
+              </span>
+            )
+          })}
         </div>
       </div>
     </section>

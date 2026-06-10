@@ -1,70 +1,50 @@
+import { CharReveal } from './char-reveal'
 import { ScrollReveal } from './scroll-reveal'
 
 const services = [
-  {
-    title: 'Logo Design',
-    description: 'Distinct marks built for recall, trust, and daily use.',
-    tag: 'Identity',
-  },
-  {
-    title: 'Brand Identity',
-    description: 'Color, type, rules, and systems that keep every touchpoint consistent.',
-    tag: 'Identity',
-  },
-  {
-    title: 'Poster Design',
-    description: 'Event and campaign posters made to stop the scroll.',
-    tag: 'Print',
-  },
-  {
-    title: 'Banner Design',
-    description: 'Digital and outdoor banners that turn attention into action.',
-    tag: 'Print',
-  },
-  {
-    title: 'Short-Form Video',
-    description: 'Reels, Shorts, and social edits tuned for retention.',
-    tag: 'Video',
-  },
-  {
-    title: 'Long-Form Video',
-    description: 'YouTube, brand films, and stories shaped with rhythm and polish.',
-    tag: 'Video',
-  },
+  { title: 'Logo Design', description: 'Distinct marks built for recall, trust, and daily use.', tag: 'Identity' },
+  { title: 'Brand Identity', description: 'Color, type, rules, and systems that keep every touchpoint consistent.', tag: 'System' },
+  { title: 'Poster Design', description: 'Event and campaign posters made to stop the scroll.', tag: 'Print' },
+  { title: 'Banner Design', description: 'Digital and outdoor banners that turn attention into action.', tag: 'Campaign' },
+  { title: 'Reel Editing', description: 'Short-form edits tuned for rhythm, retention, captions, and shareability.', tag: 'Video' },
+  { title: 'Video Production', description: 'YouTube edits, wedding films, and brand stories shaped with polish.', tag: 'Film' },
 ]
 
 export function ServicesSection() {
   return (
-    <section id="services" className="py-28 md:py-40">
+    <section id="services" className="snap-section flex min-h-screen items-center bg-[var(--surface)] py-24">
       <div className="container-x">
-        <ScrollReveal className="mb-20 grid gap-8 md:grid-cols-[0.35fr_1fr]">
-          <p className="label">/ What We Do</p>
-          <h2 className="font-display max-w-4xl text-5xl leading-[0.95] tracking-[-0.05em] md:text-7xl">
-            Six Ways We Make You Unforgettable.
+        <ScrollReveal className="mb-14 grid gap-6 md:grid-cols-[0.32fr_1fr]">
+          <p className="label">/ WHAT WE DO</p>
+          <h2 className="font-display max-w-4xl text-6xl uppercase leading-[0.92] md:text-7xl">
+            <CharReveal text="SIX WAYS WE MAKE" as="span" className="block text-[var(--text)]" />
+            <CharReveal text="YOU UNFORGETTABLE." as="span" className="block text-[var(--brand)]" delay={0.12} />
           </h2>
         </ScrollReveal>
 
-        <div className="border-t border-[#1E1E1E]">
+        <div className="border-t border-[var(--border)]">
           {services.map((service, index) => (
             <ScrollReveal key={service.title} delay={index * 0.04}>
               <a
                 href="#contact"
-                className="group grid min-h-28 items-center gap-5 border-b border-[#1E1E1E] py-8 transition-colors duration-500 hover:bg-[#111111] md:grid-cols-[80px_1fr_220px]"
+                className="group grid min-h-[72px] items-center gap-4 border-b border-[var(--border)] border-l-[3px] border-l-transparent px-0 py-4 transition-all duration-300 hover:border-l-[var(--brand)] hover:bg-[rgba(232,36,26,0.06)] md:grid-cols-[70px_1fr_150px_44px]"
               >
-                <span className="text-sm text-[#555555] transition-colors duration-500 group-hover:text-[#E8FF00]">
+                <span className="text-[13px] text-[var(--muted)] transition-colors duration-300 group-hover:text-[var(--brand)]">
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <span className="overflow-hidden">
-                  <span className="block font-display text-4xl leading-none tracking-[-0.04em] transition-transform duration-500 group-hover:-translate-y-2 md:text-[40px]">
+                <span className="min-w-0">
+                  <span className="block font-display text-4xl uppercase leading-none text-[var(--text)] md:text-[36px]">
                     {service.title}
                   </span>
-                  <span className="mt-3 block translate-x-6 text-sm text-[#555555] opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
+                  <span className="mt-2 block translate-x-[-12px] text-sm text-[var(--muted)] opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100">
                     {service.description}
                   </span>
                 </span>
-                <span className="flex items-center justify-between gap-4 text-xs font-medium uppercase tracking-[0.15em] text-[#555555]">
+                <span className="w-fit rounded-[4px] border border-[var(--border)] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--muted)]">
                   {service.tag}
-                  <span className="text-[#E8FF00]">→</span>
+                </span>
+                <span className="text-2xl text-[var(--muted)] transition-transform duration-300 group-hover:rotate-45 group-hover:text-[var(--brand)]">
+                  →
                 </span>
               </a>
             </ScrollReveal>

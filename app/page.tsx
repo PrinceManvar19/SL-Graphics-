@@ -1,6 +1,5 @@
 import { Navbar } from '@/components/navbar'
 import { HeroSection } from '@/components/hero-section'
-import { MarqueeSection } from '@/components/marquee-section'
 import { ServicesSection } from '@/components/services-section'
 import { PortfolioSection } from '@/components/portfolio-section'
 import { ProcessSection } from '@/components/process-section'
@@ -12,11 +11,10 @@ import { SiteEffects } from '@/components/site-effects'
 
 export default function Home() {
   return (
-    <main id="top" className="bg-[#0A0A0A] text-[#F0EDE8] overflow-x-hidden">
+    <main id="top" className="overflow-x-hidden bg-[var(--bg)] text-[var(--text)]">
       <SiteEffects />
       <Navbar />
       <HeroSection />
-      <MarqueeSection />
       <ServicesSection />
       <PortfolioSection />
       <ProcessSection />

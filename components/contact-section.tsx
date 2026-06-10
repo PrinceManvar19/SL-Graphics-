@@ -1,7 +1,15 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
+import { CharReveal } from './char-reveal'
 import { ScrollReveal } from './scroll-reveal'
+
+const details = [
+  { label: 'Email', value: 'hello@slgraphics.in', href: 'mailto:hello@slgraphics.in' },
+  { label: 'Phone', value: '+91 98XXX XXXXX', href: 'tel:+9198XXXXXXXX' },
+  { label: 'Location', value: 'Uttar Pradesh, India' },
+  { label: 'WhatsApp', value: 'Chat on WhatsApp', href: 'https://wa.me/91XXXXXXXXXX' },
+]
 
 export function ContactSection() {
   const [submitted, setSubmitted] = useState(false)
@@ -14,60 +22,63 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="py-28 md:py-40">
+    <section id="contact" className="snap-section flex min-h-[80vh] items-center bg-[var(--surface)] py-24">
       <div className="container-x grid gap-16 lg:grid-cols-[0.9fr_1fr]">
         <ScrollReveal>
-          <p className="label mb-8">/ Get In Touch</p>
-          <h2 className="font-display max-w-xl text-5xl leading-[0.95] tracking-[-0.05em] md:text-7xl">
-            Let&apos;s Create Together.
+          <p className="label mb-8">/ CONTACT</p>
+          <h2 className="font-display max-w-xl text-6xl uppercase leading-[0.92] md:text-[56px]">
+            <CharReveal text="LET'S CREATE" as="span" className="block text-[var(--text)]" />
+            <CharReveal text="TOGETHER." as="span" className="block text-[var(--brand)]" delay={0.1} />
           </h2>
 
-          <div className="mt-12 space-y-5 text-[#555555]">
-            <p>
-              <span className="mr-3 text-[#E8FF00]">01</span>
-              <a href="mailto:hello@slgraphics.in" className="transition-colors duration-500 hover:text-[#E8FF00]">
-                hello@slgraphics.in
-              </a>
-            </p>
-            <p>
-              <span className="mr-3 text-[#E8FF00]">02</span>
-              <a href="tel:+9198XXXXXXXX" className="transition-colors duration-500 hover:text-[#E8FF00]">
-                +91 98XXX XXXXX
-              </a>
-            </p>
-            <p>
-              <span className="mr-3 text-[#E8FF00]">03</span>
-              Uttar Pradesh, India
-            </p>
+          <div className="mt-12 space-y-5">
+            {details.map((detail) => (
+              <p key={detail.label} className="flex items-center gap-3 text-sm text-[var(--muted)]">
+                <span className="text-[var(--brand)]">◆</span>
+                <span className="min-w-20 text-[11px] uppercase tracking-[0.18em]">{detail.label}</span>
+                {detail.href ? (
+                  <a
+                    href={detail.href}
+                    target={detail.href.startsWith('https') ? '_blank' : undefined}
+                    rel={detail.href.startsWith('https') ? 'noreferrer' : undefined}
+                    className="transition-colors duration-300 hover:text-[var(--text)]"
+                  >
+                    {detail.value}
+                  </a>
+                ) : (
+                  <span>{detail.value}</span>
+                )}
+              </p>
+            ))}
           </div>
 
           <a
             href="https://wa.me/91XXXXXXXXXX"
             target="_blank"
             rel="noreferrer"
-            className="mt-10 inline-flex border border-[#E8FF00] px-6 py-3 text-xs font-medium uppercase tracking-[0.15em] text-[#E8FF00] transition-colors duration-500 hover:bg-[#E8FF00] hover:text-[#0A0A0A]"
+            className="mt-10 inline-flex rounded-[4px] bg-[#25D366] px-6 py-3 text-sm font-medium text-white transition-transform duration-300 hover:scale-[1.02]"
           >
-            WhatsApp Us →
+            WhatsApp CTA
           </a>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <form onSubmit={handleSubmit} className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-7">
             <div>
-              <label className="label mb-3 block" htmlFor="name">
+              <label className="label mb-2 block" htmlFor="name">
                 Name
               </label>
               <input
                 id="name"
                 name="name"
                 required
-                className="w-full border-0 border-b border-[#1E1E1E] bg-transparent px-0 py-4 text-[#F0EDE8] outline-none transition-colors duration-500 placeholder:text-[#555555] focus:border-[#E8FF00]"
+                className="w-full border-0 border-b border-[var(--border)] bg-transparent px-0 py-4 text-[var(--text)] outline-none transition-colors duration-300 placeholder:text-[var(--muted)] focus:border-[var(--brand)]"
                 placeholder="Your name"
               />
             </div>
 
             <div>
-              <label className="label mb-3 block" htmlFor="email">
+              <label className="label mb-2 block" htmlFor="email">
                 Email
               </label>
               <input
@@ -75,21 +86,21 @@ export function ContactSection() {
                 name="email"
                 type="email"
                 required
-                className="w-full border-0 border-b border-[#1E1E1E] bg-transparent px-0 py-4 text-[#F0EDE8] outline-none transition-colors duration-500 placeholder:text-[#555555] focus:border-[#E8FF00]"
+                className="w-full border-0 border-b border-[var(--border)] bg-transparent px-0 py-4 text-[var(--text)] outline-none transition-colors duration-300 placeholder:text-[var(--muted)] focus:border-[var(--brand)]"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label className="label mb-3 block" htmlFor="projectType">
-                Project Type
+              <label className="label mb-2 block" htmlFor="serviceType">
+                Service Type
               </label>
               <select
-                id="projectType"
-                name="projectType"
+                id="serviceType"
+                name="serviceType"
                 defaultValue=""
                 required
-                className="w-full border-0 border-b border-[#1E1E1E] bg-[#0A0A0A] px-0 py-4 text-[#F0EDE8] outline-none transition-colors duration-500 focus:border-[#E8FF00]"
+                className="w-full border-0 border-b border-[var(--border)] bg-[var(--surface)] px-0 py-4 text-[var(--text)] outline-none transition-colors duration-300 focus:border-[var(--brand)]"
               >
                 <option value="" disabled>
                   Select one
@@ -103,7 +114,7 @@ export function ContactSection() {
             </div>
 
             <div>
-              <label className="label mb-3 block" htmlFor="message">
+              <label className="label mb-2 block" htmlFor="message">
                 Message
               </label>
               <textarea
@@ -111,16 +122,16 @@ export function ContactSection() {
                 name="message"
                 rows={5}
                 required
-                className="w-full resize-none border-0 border-b border-[#1E1E1E] bg-transparent px-0 py-4 text-[#F0EDE8] outline-none transition-colors duration-500 placeholder:text-[#555555] focus:border-[#E8FF00]"
+                className="w-full resize-none border-0 border-b border-[var(--border)] bg-transparent px-0 py-4 text-[var(--text)] outline-none transition-colors duration-300 placeholder:text-[var(--muted)] focus:border-[var(--brand)]"
                 placeholder="Tell us what you need."
               />
             </div>
 
             <button
               type="submit"
-              className="border border-[#E8FF00] bg-[#E8FF00] px-8 py-4 text-xs font-medium uppercase tracking-[0.15em] text-[#0A0A0A] transition-colors duration-500 hover:bg-transparent hover:text-[#E8FF00]"
+              className="rounded-[4px] bg-[var(--brand)] px-8 py-4 font-display text-lg uppercase text-white transition-colors duration-300 hover:bg-[var(--brand-bright)]"
             >
-              {submitted ? 'Sent' : 'Send It →'}
+              {submitted ? 'SENT' : 'SEND IT →'}
             </button>
           </form>
         </ScrollReveal>

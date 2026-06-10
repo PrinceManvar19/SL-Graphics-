@@ -1,13 +1,14 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
-import { Inter, Space_Grotesk } from 'next/font/google'
+import { Bebas_Neue, Inter } from 'next/font/google'
 import './globals.css'
 
-const spaceGrotesk = Space_Grotesk({
+const bebasNeue = Bebas_Neue({
   variable: '--font-display',
   subsets: ['latin'],
-  weight: ['400', '700'],
+  weight: '400',
 })
+
 const inter = Inter({
   variable: '--font-body',
   subsets: ['latin'],
@@ -30,10 +31,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html 
-      lang="en" 
-      className={`${spaceGrotesk.variable} ${inter.variable}`}
-    >
+    <html lang="en" className={`${bebasNeue.variable} ${inter.variable}`}>
       <body>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
