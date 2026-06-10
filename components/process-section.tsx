@@ -6,23 +6,28 @@ import { ScrollReveal } from './scroll-reveal'
 const steps = [
   {
     number: '01',
-    title: 'Discovery',
-    description: 'Deep dive into your brand, goals, and target audience to understand the vision.',
+    title: 'Brief & Discovery',
+    description: 'You share your vision, references, and goals. We ask the right questions to understand your brand and target audience.',
   },
   {
     number: '02',
-    title: 'Strategy',
-    description: 'Develop a comprehensive creative strategy that aligns with your objectives.',
+    title: 'Concept & Strategy',
+    description: 'We research your industry, study competitors, and sketch initial directions before any pixel is placed.',
   },
   {
     number: '03',
-    title: 'Creation',
-    description: 'Craft stunning visuals and experiences that bring the strategy to life.',
+    title: 'Design & Creation',
+    description: 'Our team crafts your visuals — be it a logo, poster, banner, or video — with precision and creative intent.',
   },
   {
     number: '04',
-    title: 'Refinement',
-    description: 'Iterate and perfect based on feedback to ensure excellence.',
+    title: 'Review & Revisions',
+    description: 'You review the work. We take your feedback seriously and refine until it\'s exactly right.',
+  },
+  {
+    number: '05',
+    title: 'Final Delivery',
+    description: 'Receive your files in all required formats — print-ready, web-optimized, and everything in between.',
   },
 ]
 
