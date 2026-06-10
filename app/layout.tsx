@@ -1,49 +1,26 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
-import { Bebas_Neue, Rajdhani, DM_Sans, Space_Mono } from 'next/font/google'
+import { Inter, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 
-const bebasNeue = Bebas_Neue({ 
-  variable: '--font-bebas', 
+const spaceGrotesk = Space_Grotesk({
+  variable: '--font-display',
   subsets: ['latin'],
-  weight: '400'
+  weight: ['400', '700'],
 })
-const rajdhani = Rajdhani({ 
-  variable: '--font-rajdhani', 
+const inter = Inter({
+  variable: '--font-body',
   subsets: ['latin'],
-  weight: ['400', '500', '600']
-})
-const dmSans = DM_Sans({ 
-  variable: '--font-dm-sans', 
-  subsets: ['latin'],
-  weight: ['400', '500', '600']
-})
-const spaceMono = Space_Mono({ 
-  variable: '--font-space-mono', 
-  subsets: ['latin'],
-  weight: ['400', '700']
+  weight: ['400', '500'],
 })
 
 export const metadata: Metadata = {
-  title: 'SL Graphic - Creative Studio',
-  description: 'Bold. Angular. Cinematic. Premium graphic design and creative solutions.',
+  title: 'SL Graphics - Creative Studio',
+  description: 'Logo design, branding, posters, banners, and video editing from UP, India.',
   generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/sl-logo.png',
+    apple: '/sl-logo.png',
   },
 }
 
@@ -55,9 +32,9 @@ export default function RootLayout({
   return (
     <html 
       lang="en" 
-      className={`${bebasNeue.variable} ${rajdhani.variable} ${dmSans.variable} ${spaceMono.variable} bg-black`}
+      className={`${spaceGrotesk.variable} ${inter.variable}`}
     >
-      <body className="bg-black text-white antialiased font-sans">
+      <body>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

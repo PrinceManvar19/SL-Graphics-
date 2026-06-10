@@ -1,100 +1,69 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import { ScrollReveal } from './scroll-reveal'
 
 const steps = [
   {
     number: '01',
     title: 'Brief & Discovery',
-    description: 'You share your vision, references, and goals. We ask the right questions to understand your brand and target audience.',
+    description: 'You share the vision, references, and goals. We map the audience before we touch the canvas.',
   },
   {
     number: '02',
     title: 'Concept & Strategy',
-    description: 'We research your industry, study competitors, and sketch initial directions before any pixel is placed.',
+    description: 'We study the market, sharpen the direction, and decide what should be loud and what should be quiet.',
   },
   {
     number: '03',
     title: 'Design & Creation',
-    description: 'Our team crafts your visuals — be it a logo, poster, banner, or video — with precision and creative intent.',
+    description: 'Logos, posters, banners, edits, and films are built with intent, contrast, rhythm, and restraint.',
   },
   {
     number: '04',
     title: 'Review & Revisions',
-    description: 'You review the work. We take your feedback seriously and refine until it\'s exactly right.',
+    description: 'You review the work. We refine the details until the piece feels exact, useful, and memorable.',
   },
   {
     number: '05',
     title: 'Final Delivery',
-    description: 'Receive your files in all required formats — print-ready, web-optimized, and everything in between.',
+    description: 'You get clean files for print, web, social, and handoff, ready to use across every channel.',
   },
 ]
 
 export function ProcessSection() {
   return (
-    <section id="process" className="relative py-24 md:py-32 overflow-hidden">
+    <section id="process" className="relative py-28 md:py-40">
       <div className="container-x">
-        {/* Section Header */}
-        <ScrollReveal className="mb-20">
-          <div className="max-w-2xl">
-            <motion.span className="text-primary-light uppercase tracking-widest text-sm font-tech">
-              Our Approach
-            </motion.span>
-            <h2 className="text-4xl md:text-6xl font-display mt-4 mb-6 text-balance">
-              Process Built for Excellence
-            </h2>
-          </div>
+        <ScrollReveal className="mb-20 grid gap-8 md:grid-cols-[0.35fr_1fr]">
+          <p className="label">/ How We Work</p>
+          <h2 className="font-display max-w-4xl text-5xl leading-[0.95] tracking-[-0.05em] md:text-7xl">
+            Five Steps. Zero Confusion.
+          </h2>
         </ScrollReveal>
 
-        {/* Process Steps */}
-        <div className="space-y-12 md:space-y-16">
-          {steps.map((step, index) => (
-            <ScrollReveal key={step.number} delay={index * 0.1}>
-              <motion.div
-                className="relative grid grid-cols-1 md:grid-cols-4 gap-8 items-start"
-                whileHover={{ x: 10 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Step Number */}
-                <motion.div
-                  className="md:col-span-1"
-                  animate={{ opacity: [0.5, 1, 0.5] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  <div className="text-6xl md:text-7xl font-display font-bold text-primary-dark/40 mb-4">
-                    {step.number}
+        <div className="relative">
+          <div className="process-line absolute left-1/2 top-0 hidden h-full w-px bg-[#1E1E1E] md:block" />
+          <div className="space-y-20">
+            {steps.map((step, index) => {
+              const reverse = index % 2 === 1
+
+              return (
+                <ScrollReveal key={step.number} delay={index * 0.05}>
+                  <div className="grid items-center gap-8 md:grid-cols-2 md:gap-20">
+                    <div className={reverse ? 'md:order-2 md:text-right' : ''}>
+                      <div className="font-display text-[96px] leading-none tracking-[-0.08em] text-transparent [-webkit-text-stroke:1px_#555555] md:text-[120px]">
+                        {step.number}
+                      </div>
+                    </div>
+                    <div className={reverse ? 'md:order-1' : ''}>
+                      <h3 className="font-display text-4xl leading-none tracking-[-0.04em] md:text-5xl">
+                        {step.title}
+                      </h3>
+                      <p className="mt-5 max-w-xl text-[#555555]">{step.description}</p>
+                    </div>
                   </div>
-                </motion.div>
-
-                {/* Content */}
-                <div className="md:col-span-3 border-l-2 border-primary-dark/30 pl-6 md:pl-8 group">
-                  <h3 className="text-2xl md:text-3xl font-display mb-3 uppercase tracking-wider group-hover:text-primary-light transition-colors">
-                    {step.title}
-                  </h3>
-                  <p className="text-white/60 font-tech text-lg leading-relaxed">
-                    {step.description}
-                  </p>
-
-                  <motion.div
-                    className="h-0.5 bg-gradient-to-r from-primary to-primary-light mt-4 w-0"
-                    whileHover={{ width: '60px' }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </div>
-
-                {/* Connector */}
-                {index < steps.length - 1 && (
-                  <motion.div
-                    className="hidden md:block absolute left-20 top-24 w-0.5 h-24 bg-gradient-to-b from-primary to-transparent"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: index * 0.2 }}
-                  />
-                )}
-              </motion.div>
-            </ScrollReveal>
-          ))}
+                </ScrollReveal>
+              )
+            })}
+          </div>
         </div>
       </div>
     </section>

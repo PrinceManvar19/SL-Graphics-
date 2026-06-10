@@ -1,126 +1,74 @@
 'use client'
 
 import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 import { ScrollReveal } from './scroll-reveal'
 
-const portfolioItems = [
-  { title: 'Radhe Traders', category: 'Logo Design', description: 'Bold typographic emblem for a wholesale trading firm in UP.', color: 'from-orange-900/40 to-red-900/40' },
-  { title: 'Viral Reels Pack', category: 'Short Video Editing', description: '30-reel editing series with motion captions and beat-sync cuts.', color: 'from-purple-900/40 to-red-900/40' },
-  { title: 'Diwali Campaign', category: 'Poster Design', description: 'Festival campaign — 12 posters across print and social formats.', color: 'from-yellow-900/40 to-red-900/40' },
-  { title: 'CloudFit Brand', category: 'Brand Identity', description: 'Logo + brand kit for a new fitness coaching startup.', color: 'from-blue-900/40 to-red-900/40' },
-  { title: 'Highway Billboard', category: 'Banner Design', description: 'Large-format outdoor banner for a highway-facing real estate project.', color: 'from-green-900/40 to-red-900/40' },
-  { title: 'Wedding Film Edit', category: 'Long Video Editing', description: 'Cinematic 8-minute wedding highlight with color grading and music.', color: 'from-pink-900/40 to-red-900/40' },
+const projects = [
+  { title: 'Radhe Traders', type: 'Wholesale Brand', category: 'Logo', icon: 'SL', height: 'md:row-span-2', gradient: 'from-[#E8FF00] via-[#5b6400] to-[#111111]' },
+  { title: 'Viral Reels Pack', type: 'Creator Studio', category: 'Video', icon: '▶', height: '', gradient: 'from-[#7B2CBF] via-[#2a123d] to-[#111111]' },
+  { title: 'Diwali Campaign', type: 'Retail Campaign', category: 'Print', icon: '✦', height: '', gradient: 'from-[#E8FF00] via-[#7a4d00] to-[#111111]' },
+  { title: 'CloudFit Brand', type: 'Fitness Startup', category: 'Brand', icon: 'CF', height: 'md:row-span-2', gradient: 'from-[#F0EDE8] via-[#334155] to-[#111111]' },
+  { title: 'Highway Billboard', type: 'Real Estate', category: 'Print', icon: '◉', height: '', gradient: 'from-[#0EA5E9] via-[#064e3b] to-[#111111]' },
+  { title: 'Wedding Film Edit', type: 'Film Production', category: 'Video', icon: '◼', height: '', gradient: 'from-[#EC4899] via-[#4c1d3f] to-[#111111]' },
 ]
 
-const filters = ['All', 'Logo Design', 'Video Editing', 'Poster Design', 'Brand Identity', 'Banner Design']
+const filters = ['All', 'Logo', 'Video', 'Print', 'Brand']
 
 export function PortfolioSection() {
   const [activeFilter, setActiveFilter] = useState('All')
 
-  const filteredItems = portfolioItems.filter((item) => {
-    if (activeFilter === 'All') return true
-    if (activeFilter === 'Video Editing') return item.category.includes('Video Editing')
-    return item.category === activeFilter
-  })
+  const filteredProjects = projects.filter((project) => activeFilter === 'All' || project.category === activeFilter)
 
   return (
-    <section id="work" className="relative py-24 md:py-32 overflow-hidden">
+    <section id="work" className="py-28 md:py-40">
       <div className="container-x">
-        <ScrollReveal className="mb-10">
-          <div className="max-w-2xl">
-            <motion.span className="text-primary-light uppercase tracking-widest text-sm font-tech">
-              Our Portfolio
-            </motion.span>
-            <h2 className="text-4xl md:text-6xl font-display mt-4 mb-6 text-balance">
-              Work That Speaks
+        <ScrollReveal className="mb-12 grid gap-8 md:grid-cols-[0.35fr_1fr]">
+          <p className="label">/ Selected Work</p>
+          <div>
+            <h2 className="font-display max-w-4xl text-5xl leading-[0.95] tracking-[-0.05em] md:text-7xl">
+              Work That Moves People.
             </h2>
-            <p className="text-lg text-white/60 font-tech">
-              Explore our collection of projects that showcase bold creativity and strategic thinking.
-            </p>
+            <div className="mt-10 flex flex-wrap gap-2">
+              {filters.map((filter) => (
+                <button
+                  key={filter}
+                  type="button"
+                  onClick={() => setActiveFilter(filter)}
+                  className={`border px-4 py-2 text-xs font-medium uppercase tracking-[0.15em] transition-colors duration-500 ${
+                    activeFilter === filter
+                      ? 'border-[#E8FF00] bg-[#E8FF00] text-[#0A0A0A]'
+                      : 'border-[#1E1E1E] text-[#555555] hover:border-[#E8FF00] hover:text-[#E8FF00]'
+                  }`}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
           </div>
         </ScrollReveal>
 
-        <ScrollReveal className="mb-10">
-          <div className="flex flex-wrap gap-2">
-            {filters.map((filter) => (
-              <button
-                key={filter}
-                type="button"
-                onClick={() => setActiveFilter(filter)}
-                className={
-                  activeFilter === filter
-                    ? 'filter-active bg-red-600 text-white rounded-sm px-4 py-1.5 text-xs font-tech uppercase'
-                    : 'text-white/50 hover:text-white px-4 py-1.5 text-xs font-tech uppercase border border-transparent hover:border-white/10 rounded-sm transition-colors'
-                }
-              >
-                {filter}
-              </button>
-            ))}
-          </div>
-        </ScrollReveal>
-
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[300px]">
-          <AnimatePresence mode="popLayout">
-            {filteredItems.map((item, index) => (
-              <motion.div
-                layout
-                key={item.title}
-                className={`group relative overflow-hidden rounded-sm border border-primary-dark/30 cursor-pointer h-full ${
-                  activeFilter === 'All' && index % 5 === 0 ? 'md:col-span-2 md:row-span-2' : ''
-                }`}
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.25 }}
-                whileHover={{
-                  borderColor: 'rgba(255, 34, 0, 0.5)',
-                  boxShadow: '0 0 30px rgba(204, 0, 0, 0.2)',
-                }}
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${item.color} transition-all duration-300`} />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.12),transparent_35%)] opacity-70" />
-
-                <div className="absolute inset-0 flex flex-col justify-between p-6 md:p-8 z-10">
-                  <div>
-                    <motion.span
-                      className="inline-block text-xs uppercase tracking-widest text-primary-light font-tech mb-3"
-                      initial={{ opacity: 0.6 }}
-                      whileHover={{ opacity: 1 }}
-                    >
-                      {item.category}
-                    </motion.span>
+        <div className="grid auto-rows-[260px] grid-cols-1 gap-5 md:grid-cols-3">
+          {filteredProjects.map((project, index) => (
+            <ScrollReveal key={project.title} delay={index * 0.04} className={project.height}>
+              <article className="group flex h-full flex-col border border-[#1E1E1E] bg-[#111111] transition-transform duration-500 hover:scale-[1.02] hover:border-[#E8FF00]">
+                <div className={`relative min-h-0 flex-1 bg-gradient-to-br ${project.gradient}`}>
+                  <div className="absolute inset-0 grid place-items-center font-display text-7xl text-[#F0EDE8]/80">
+                    {project.icon}
                   </div>
-
-                  <div>
-                    <h3 className="text-2xl md:text-3xl font-display mb-2 text-balance group-hover:text-primary-light transition-colors">
-                      {item.title}
-                    </h3>
-                    <motion.p
-                      className="text-white/60 font-tech text-sm"
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {item.description}
-                    </motion.p>
+                  <div className="absolute inset-0 flex items-end justify-start bg-[#0A0A0A]/70 p-6 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    <span className="text-sm font-medium uppercase tracking-[0.15em] text-[#E8FF00]">
+                      View Project →
+                    </span>
                   </div>
-
-                  <motion.div
-                    className="flex items-center gap-2 text-primary-light opacity-0 group-hover:opacity-100 transition-opacity"
-                    initial={{ x: -10 }}
-                    whileHover={{ x: 0 }}
-                  >
-                    <span className="text-sm font-tech uppercase tracking-wider">View Project</span>
-                    <span className="text-lg">→</span>
-                  </motion.div>
                 </div>
-
-                <motion.div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-5" />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+                <div className="border-t border-[#1E1E1E] p-5">
+                  <h3 className="text-lg font-bold">{project.title}</h3>
+                  <p className="mt-1 text-xs uppercase tracking-[0.15em] text-[#555555]">{project.type}</p>
+                </div>
+              </article>
+            </ScrollReveal>
+          ))}
+        </div>
       </div>
     </section>
   )

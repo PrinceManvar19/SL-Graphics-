@@ -1,83 +1,47 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import { ScrollReveal } from './scroll-reveal'
 
 const testimonials = [
   {
-    name: 'Alexandra Chen',
-    company: 'TechVision Inc.',
-    quote: 'SL Graphic transformed our brand identity. The results exceeded our expectations.',
-    rating: 5,
+    name: 'Amit Verma',
+    company: 'Local Retail Brand',
+    quote: 'The poster campaign looked premium and brought real walk-ins. Clean work, fast delivery, no confusion.',
   },
   {
-    name: 'Marcus Johnson',
-    company: 'FilmWorks Studio',
-    quote: 'Their creative direction elevated our entire production. Truly exceptional work.',
-    rating: 5,
+    name: 'Priya Singh',
+    company: 'Creator Channel',
+    quote: 'Our reels finally felt sharp. Captions, cuts, sound, everything worked better for Indian audiences.',
   },
   {
-    name: 'Sofia Rodriguez',
-    company: 'Luxury Brands Co.',
-    quote: 'The attention to detail and bold creative vision sets them apart from others.',
-    rating: 5,
+    name: 'Rahul Mishra',
+    company: 'Startup Founder',
+    quote: 'SL Graphics gave us a logo and visual system that made the brand feel serious from day one.',
   },
 ]
 
 export function TestimonialsSection() {
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
+    <section className="bg-[#111111] py-28 md:py-40">
       <div className="container-x">
-        {/* Section Header */}
-        <ScrollReveal className="text-center mb-16">
-          <span className="text-primary-light uppercase tracking-widest text-sm font-tech">
-            Client Feedback
-          </span>
-          <h2 className="text-4xl md:text-6xl font-display mt-4 mb-6 text-balance">
-            What Clients Say
+        <ScrollReveal className="mb-20 text-center">
+          <h2 className="font-display text-6xl leading-none tracking-[-0.06em] text-[#E8FF00] md:text-8xl">
+            Clients Don&apos;t Lie.
           </h2>
         </ScrollReveal>
 
-        {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid gap-10 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (
-            <ScrollReveal key={testimonial.name} delay={index * 0.1}>
-              <motion.div
-                className="relative p-6 md:p-8 border border-primary-dark/30 glass rounded-sm group"
-                whileHover={{
-                  borderColor: 'rgba(255, 34, 0, 0.5)',
-                  boxShadow: '0 0 30px rgba(204, 0, 0, 0.15)',
-                }}
-              >
-                {/* Gradient Background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-sm" />
-
-                <div className="relative z-10">
-                  {/* Stars */}
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <span key={i} className="text-primary-light text-lg">
-                        ★
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Quote */}
-                  <p className="text-white/80 font-tech text-lg italic mb-6 leading-relaxed">
-                    "{testimonial.quote}"
-                  </p>
-
-                  {/* Author */}
-                  <div className="border-t border-primary-dark/20 pt-4">
-                    <p className="font-display text-white uppercase tracking-wider">
-                      {testimonial.name}
-                    </p>
-                    <p className="text-white/50 font-tech text-sm">
-                      {testimonial.company}
-                    </p>
-                  </div>
+            <ScrollReveal key={testimonial.name} delay={index * 0.06}>
+              <figure className="border-t border-[#1E1E1E] pt-8">
+                <div className="mb-6 text-[#E8FF00]" aria-label="5 star rating">
+                  ★★★★★
                 </div>
-              </motion.div>
+                <blockquote className="text-xl leading-relaxed text-[#F0EDE8]">
+                  “{testimonial.quote}”
+                </blockquote>
+                <figcaption className="mt-8 text-sm uppercase tracking-[0.15em] text-[#555555]">
+                  {testimonial.name} · {testimonial.company}
+                </figcaption>
+              </figure>
             </ScrollReveal>
           ))}
         </div>
