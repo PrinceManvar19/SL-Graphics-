@@ -170,12 +170,15 @@ button {
 
 .char-reveal .char {
   display: inline-block;
+}
+
+.char-reveal.is-ready .char {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.char-reveal.is-visible .char {
+.char-reveal.is-ready.is-visible .char {
   opacity: 1;
   transform: translateY(0);
 }

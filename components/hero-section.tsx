@@ -8,30 +8,10 @@ const stats = [
   { value: '5★', label: 'Rating' },
 ]
 
-const marqueeItems = [
-  'LOGO DESIGN',
-  '✦',
-  'BRAND IDENTITY',
-  '◈',
-  'POSTER DESIGN',
-  '◉',
-  'BANNER DESIGN',
-  '▶',
-  'REEL EDITING',
-  '◼',
-  'VIDEO PRODUCTION',
-  '✦',
-  'WEDDING FILMS',
-  '◈',
-  'YOUTUBE EDITING',
-]
-
 export function HeroSection() {
-  const loop = [...marqueeItems, ...marqueeItems]
-
   return (
-    <section className="snap-section relative flex min-h-screen items-center overflow-hidden bg-[var(--bg)] pt-16">
-      <div className="container-x grid min-h-[calc(100vh-4rem)] items-center gap-12 py-14 lg:grid-cols-[58%_42%]">
+    <section className="snap-section relative flex min-h-screen items-center overflow-hidden bg-[var(--bg)] pt-28">
+      <div className="container-x grid min-h-[calc(100vh-7rem)] items-center gap-12 py-14 lg:grid-cols-[58%_42%]">
         <div className="relative z-10">
           <p className="label mb-7">CREATIVE STUDIO · UP, INDIA</p>
 
@@ -79,23 +59,6 @@ export function HeroSection() {
             priority
             className="logo-float relative z-10 w-[320px] object-contain"
           />
-        </div>
-      </div>
-
-      <div className="absolute bottom-0 left-0 right-0 overflow-hidden border-y border-[var(--border)] bg-[var(--bg)] py-4">
-        <div className="marquee-track flex w-max whitespace-nowrap">
-          {loop.map((item, index) => {
-            const isMark = item.length === 1
-
-            return (
-              <span
-                key={`${item}-${index}`}
-                className={`px-4 font-display text-sm uppercase ${isMark ? 'text-[var(--brand)]' : 'text-[var(--muted)]'}`}
-              >
-                {item}
-              </span>
-            )
-          })}
         </div>
       </div>
     </section>

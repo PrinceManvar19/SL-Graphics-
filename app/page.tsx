@@ -1,4 +1,5 @@
 import { Navbar } from '@/components/navbar'
+import { MarqueeSection } from '@/components/marquee-section'
 import { HeroSection } from '@/components/hero-section'
 import { ServicesSection } from '@/components/services-section'
 import { PortfolioSection } from '@/components/portfolio-section'
@@ -14,6 +15,7 @@ export default function Home() {
     <main id="top" className="overflow-x-hidden bg-[var(--bg)] text-[var(--text)]">
       <SiteEffects />
       <Navbar />
+      <MarqueeSection />
       <HeroSection />
       <ServicesSection />
       <PortfolioSection />

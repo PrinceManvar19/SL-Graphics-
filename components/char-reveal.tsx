@@ -17,8 +17,16 @@ export function CharReveal({ text, as: Tag = 'span', className = '', delay = 0 }
     const node = ref.current
     if (!node) return
 
+    node.classList.add('is-ready')
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       node.classList.add('is-visible')
+      return
+    }
+
+    const rect = node.getBoundingClientRect()
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      window.requestAnimationFrame(() => node.classList.add('is-visible'))
       return
     }
 

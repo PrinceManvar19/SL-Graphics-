@@ -56,7 +56,7 @@ export function ContactSection() {
             href="https://wa.me/91XXXXXXXXXX"
             target="_blank"
             rel="noreferrer"
-            className="mt-10 inline-flex rounded-[4px] bg-[#25D366] px-6 py-3 text-sm font-medium text-white transition-transform duration-300 hover:scale-[1.02]"
+            className="mt-10 inline-flex rounded-[4px] border-[1.5px] border-[var(--brand)] bg-transparent px-6 py-3 text-sm font-medium text-white transition-colors duration-300 hover:bg-[var(--brand)]"
           >
             WhatsApp CTA
           </a>
@@ -129,7 +129,7 @@ export function ContactSection() {
 
             <button
               type="submit"
-              className="rounded-[4px] bg-[var(--brand)] px-8 py-4 font-display text-lg uppercase text-white transition-colors duration-300 hover:bg-[var(--brand-bright)]"
+              className="rounded-[4px] bg-[#E8241A] px-8 py-[14px] font-display text-lg uppercase text-white transition-colors duration-300 hover:bg-[var(--brand-bright)]"
             >
               {submitted ? 'SENT' : 'SEND IT →'}
             </button>

@@ -4,16 +4,90 @@ import { useState } from 'react'
 import { CharReveal } from './char-reveal'
 import { ScrollReveal } from './scroll-reveal'
 
-const projects = [
-  { title: 'Radhe Traders', type: 'Wholesale Brand', category: 'Logo', gradient: 'linear-gradient(135deg, #1A0A09, #3D0D0A)' },
-  { title: 'Viral Reels Pack', type: 'Creator Studio', category: 'Video', gradient: 'linear-gradient(135deg, #0A0D1A, #0D1A3D)' },
-  { title: 'Diwali Campaign', type: 'Retail Poster', category: 'Poster', gradient: 'linear-gradient(135deg, #0D1A0A, #1A3D0D)' },
-  { title: 'CloudFit Identity', type: 'Fitness Startup', category: 'Brand', gradient: 'linear-gradient(135deg, #1A0A18, #2D0A3D)' },
-  { title: 'Highway Banner', type: 'Real Estate', category: 'Poster', gradient: 'linear-gradient(135deg, #1A0A09, #3D0D0A)' },
-  { title: 'Wedding Film Edit', type: 'Film Production', category: 'Video', gradient: 'linear-gradient(135deg, #0A0D1A, #0D1A3D)' },
+type Project = {
+  title: string
+  type: string
+  category: 'Logo' | 'Video' | 'Poster' | 'Brand'
+  gradient: string
+  initials?: string
+}
+
+const projects: Project[] = [
+  {
+    title: 'Radhe Traders',
+    type: 'Wholesale Brand',
+    category: 'Logo',
+    initials: 'RT',
+    gradient: 'linear-gradient(135deg, #1A0505, #3D0A0A)',
+  },
+  {
+    title: 'Viral Reels Pack',
+    type: 'Creator Studio',
+    category: 'Video',
+    gradient: 'linear-gradient(135deg, #050A1A, #0A1A3D)',
+  },
+  {
+    title: 'Diwali Campaign',
+    type: 'Retail Poster',
+    category: 'Poster',
+    gradient: 'linear-gradient(135deg, #051A05, #0A3D0A)',
+  },
+  {
+    title: 'CloudFit Identity',
+    type: 'Fitness Startup',
+    category: 'Brand',
+    gradient: 'linear-gradient(135deg, #0F051A, #1A0A3D)',
+  },
+  {
+    title: 'Highway Banner',
+    type: 'Real Estate',
+    category: 'Poster',
+    gradient: 'linear-gradient(135deg, #1A100A, #3D2010)',
+  },
+  {
+    title: 'Wedding Film Edit',
+    type: 'Film Production',
+    category: 'Video',
+    gradient: 'linear-gradient(135deg, #050F1A, #0A2040)',
+  },
 ]
 
 const filters = ['All', 'Logo', 'Video', 'Poster', 'Brand']
+
+function ProjectForeground({ project }: { project: Project }) {
+  if (project.category === 'Logo') {
+    return (
+      <div className="font-display text-[88px] leading-none text-white/82 md:text-[104px]">
+        {project.initials}
+      </div>
+    )
+  }
+
+  if (project.category === 'Video') {
+    return (
+      <div className="grid h-20 w-20 place-items-center rounded-full border border-white/30 bg-white/10 text-[34px] text-white backdrop-blur-sm">
+        <span className="translate-x-1">▶</span>
+      </div>
+    )
+  }
+
+  if (project.category === 'Poster') {
+    return (
+      <div className="absolute inset-8 border border-white/45">
+        <div className="absolute left-4 top-4 h-10 w-16 border-t border-l border-white/35" />
+        <div className="absolute bottom-4 right-4 h-10 w-16 border-r border-b border-white/35" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="relative h-24 w-24">
+      <div className="absolute inset-0 rotate-45 border border-white/35 bg-white/10" />
+      <div className="absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--brand)]" />
+      <div className="absolute left-1/2 top-1/2 h-4 w-16 -translate-x-1/2 -translate-y-1/2 bg-white/80" />
+    </div>
+  )
+}
 
 export function PortfolioSection() {
   const [activeFilter, setActiveFilter] = useState('All')
@@ -54,7 +128,10 @@ export function PortfolioSection() {
               <article className="group overflow-hidden rounded-[8px] border border-[var(--border)] bg-[var(--surface)] transition duration-300 hover:border-[var(--brand)] hover:shadow-[0_0_24px_rgba(232,36,26,0.2)]">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <div className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.04]" style={{ background: project.gradient }}>
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(242,240,236,0.1),transparent_55%)]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(242,240,236,0.14),transparent_58%)]" />
+                    <div className="absolute inset-0 grid place-items-center">
+                      <ProjectForeground project={project} />
+                    </div>
                   </div>
                   <div className="absolute inset-0 grid translate-y-full place-items-center bg-[rgba(232,36,26,0.85)] text-sm font-medium text-white transition-transform duration-300 group-hover:translate-y-0">
                     View Project →
