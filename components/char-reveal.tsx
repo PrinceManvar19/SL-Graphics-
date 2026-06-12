@@ -17,6 +17,10 @@ export function CharReveal({ text, as: Tag = 'span', className = '', delay = 0 }
     const node = ref.current
     if (!node) return
 
+    if (node.classList.contains('hero-line') || node.classList.contains('hero-subline')) {
+      return
+    }
+
     node.classList.add('is-ready')
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -51,7 +55,7 @@ export function CharReveal({ text, as: Tag = 'span', className = '', delay = 0 }
         <span
           key={`${char}-${index}`}
           className="char"
-          style={{ transitionDelay: `${delay + index * 0.02}s` }}
+          style={{ transitionDelay: `${delay + index * 0.02}s`, animationDelay: `${delay + index * 0.03}s` }}
         >
           {char === ' ' ? '\u00A0' : char}
         </span>

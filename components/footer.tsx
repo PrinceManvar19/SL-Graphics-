@@ -43,12 +43,12 @@ export function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-[var(--border)] bg-[var(--bg)] py-10">
+    <footer className="border-t border-[var(--brand)] bg-[#111111] py-10 text-[#CCCCCC]">
       <div className="container-x">
-        <div className="grid items-center gap-8 border-b border-[var(--border)] pb-10 md:grid-cols-[1fr_auto_1fr]">
+        <div className="grid items-center gap-8 border-b border-[var(--brand)] pb-10 md:grid-cols-[1fr_auto_1fr]">
           <div>
             <Image src="/sl-logo.png" alt="SL Graphics" width={120} height={40} className="h-10 w-auto object-contain" />
-            <p className="mt-3 text-sm text-[var(--muted)]">Bold visuals. Real impact.</p>
+            <p className="mt-3 text-sm text-[#CCCCCC]">Bold visuals. Real impact.</p>
           </div>
 
           <nav className="flex flex-wrap gap-6">
@@ -56,7 +56,8 @@ export function Footer() {
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="text-xs font-medium uppercase tracking-[0.15em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--brand)]"
+                data-cursor="hover"
+                className="text-xs font-medium uppercase tracking-[0.15em] text-[#CCCCCC] transition-colors duration-300 hover:text-white"
               >
                 {item}
               </a>
@@ -74,7 +75,8 @@ export function Footer() {
                   target={social.href.startsWith('https') ? '_blank' : undefined}
                   rel={social.href.startsWith('https') ? 'noreferrer' : undefined}
                   aria-label={social.label}
-                  className="grid h-10 w-10 place-items-center rounded-[4px] border border-[var(--border)] text-[var(--muted)] transition-colors duration-300 hover:border-[var(--brand)] hover:text-[var(--brand)]"
+                  data-cursor="hover"
+                  className="grid h-10 w-10 place-items-center border border-[#444444] text-[#CCCCCC] transition-colors duration-300 hover:border-white hover:text-white"
                 >
                   <Icon />
                 </a>
@@ -83,7 +85,7 @@ export function Footer() {
           </div>
         </div>
 
-        <p className="pt-8 text-xs uppercase tracking-[0.15em] text-[var(--muted)]">
+        <p className="pt-8 text-xs uppercase tracking-[0.15em] text-[#CCCCCC]">
           © {year} SL Graphics. All rights reserved. Made in UP.
         </p>
       </div>

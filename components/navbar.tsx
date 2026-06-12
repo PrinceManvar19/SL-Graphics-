@@ -21,13 +21,18 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed left-0 right-0 top-0 z-40 border-b border-[var(--border)] backdrop-blur-2xl transition-colors duration-300 ${
-        isScrolled ? 'bg-[rgba(13,13,13,0.94)]' : 'bg-[rgba(13,13,13,0.9)]'
+      data-site-nav
+      className={`site-navbar fixed left-0 right-0 top-0 z-40 border-b backdrop-blur-2xl transition-colors duration-300 ${
+        isScrolled ? 'bg-white' : 'bg-white'
       }`}
+      style={{ transitionProperty: 'transform, background-color, border-color', transitionTimingFunction: 'cubic-bezier(0.76,0,0.24,1)' }}
     >
       <div className="container-x flex h-16 items-center justify-between">
-        <Link href="/" aria-label="SL Graphics home" className="flex items-center">
-          <Image src="/sl-logo.png" alt="SL Graphics" width={120} height={40} className="h-10 w-auto object-contain" />
+        <Link href="/" aria-label="SL Graphics home" className="navbar-brand flex items-center gap-3" data-cursor="hover">
+          <span className="navbar-logo-crop grid h-9 w-9 place-items-center overflow-hidden rounded-full">
+            <Image src="/sl-logo-cutout.png" alt="" width={48} height={48} className="h-9 w-9 object-contain" />
+          </span>
+          <span className="font-display text-xl uppercase tracking-[0.08em] text-[#171717]">SL Graphics</span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -35,14 +40,17 @@ export function Navbar() {
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
-              className="nav-link relative text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--text)]"
+              data-nav-link={item.toLowerCase()}
+              data-cursor="hover"
+              className="nav-link relative text-[11px] font-medium uppercase tracking-[0.2em] text-[#111111] transition-colors duration-300 hover:text-[var(--brand)]"
             >
               {item}
             </a>
           ))}
           <a
             href="#contact"
-            className="rounded-[4px] border-[1.5px] border-[var(--brand)] px-5 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--brand)] transition-colors duration-300 hover:bg-[var(--brand)] hover:text-white"
+            data-cursor="hover"
+            className="border-[1.5px] border-[var(--brand)] px-5 py-2 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--brand)] transition-colors duration-300 hover:bg-[var(--brand)] hover:text-white"
           >
             Start Project
           </a>
@@ -50,20 +58,21 @@ export function Navbar() {
 
         <button
           type="button"
+          data-cursor="hover"
           className="grid h-10 w-10 place-items-center md:hidden"
           onClick={() => setIsOpen((current) => !current)}
           aria-label="Toggle navigation"
           aria-expanded={isOpen}
         >
           <span className="relative block h-3 w-6">
-            <span className={`absolute left-0 top-0 h-px w-6 bg-[var(--text)] transition-transform duration-300 ${isOpen ? 'translate-y-[6px] rotate-45' : ''}`} />
-            <span className={`absolute bottom-0 left-0 h-px w-6 bg-[var(--text)] transition-transform duration-300 ${isOpen ? '-translate-y-[5px] -rotate-45' : ''}`} />
+            <span className={`absolute left-0 top-0 h-px w-6 bg-[#111111] transition-transform duration-300 ${isOpen ? 'translate-y-[6px] rotate-45' : ''}`} />
+            <span className={`absolute bottom-0 left-0 h-px w-6 bg-[#111111] transition-transform duration-300 ${isOpen ? '-translate-y-[5px] -rotate-45' : ''}`} />
           </span>
         </button>
       </div>
 
       <div
-        className={`fixed inset-0 z-[-1] bg-[var(--bg)] transition-all duration-300 md:hidden ${
+        className={`fixed inset-0 z-[-1] bg-white transition-all duration-300 md:hidden ${
           isOpen ? 'visible opacity-100' : 'invisible opacity-0'
         }`}
       >
@@ -72,7 +81,8 @@ export function Navbar() {
             <a
               key={item}
               href={`#${item.toLowerCase()}`}
-              className="font-display text-6xl uppercase leading-none text-[var(--text)] transition-colors duration-300 hover:text-[var(--brand)]"
+              data-cursor="hover"
+              className="font-display text-6xl uppercase leading-none text-[#111111] transition-colors duration-300 hover:text-[var(--brand)]"
               onClick={() => setIsOpen(false)}
             >
               {item}
@@ -80,6 +90,7 @@ export function Navbar() {
           ))}
           <a
             href="#contact"
+            data-cursor="hover"
             className="mt-4 w-fit rounded-[4px] border border-[var(--brand)] px-5 py-3 text-sm font-medium uppercase tracking-[0.15em] text-[var(--brand)]"
             onClick={() => setIsOpen(false)}
           >

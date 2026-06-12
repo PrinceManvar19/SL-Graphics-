@@ -12,17 +12,22 @@ const details = [
 ]
 
 export function ContactSection() {
-  const [submitted, setSubmitted] = useState(false)
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setSubmitted(true)
-    event.currentTarget.reset()
-    window.setTimeout(() => setSubmitted(false), 3000)
+    setStatus('sending')
+
+    window.setTimeout(() => {
+      setStatus('sent')
+      event.currentTarget.reset()
+    }, 1500)
+
+    window.setTimeout(() => setStatus('idle'), 3500)
   }
 
   return (
-    <section id="contact" className="snap-section flex min-h-[80vh] items-center bg-[var(--surface)] py-24">
+    <section id="contact" className="snap-section flex min-h-[80vh] items-center bg-[var(--surface-alt)] py-24">
       <div className="container-x grid gap-16 lg:grid-cols-[0.9fr_1fr]">
         <ScrollReveal>
           <p className="label mb-8">/ CONTACT</p>
@@ -33,7 +38,7 @@ export function ContactSection() {
 
           <div className="mt-12 space-y-5">
             {details.map((detail) => (
-              <p key={detail.label} className="flex items-center gap-3 text-sm text-[var(--muted)]">
+              <p key={detail.label} className="flex items-center gap-3 text-sm text-[var(--secondary)]">
                 <span className="text-[var(--brand)]">◆</span>
                 <span className="min-w-20 text-[11px] uppercase tracking-[0.18em]">{detail.label}</span>
                 {detail.href ? (
@@ -41,6 +46,7 @@ export function ContactSection() {
                     href={detail.href}
                     target={detail.href.startsWith('https') ? '_blank' : undefined}
                     rel={detail.href.startsWith('https') ? 'noreferrer' : undefined}
+                    data-cursor="hover"
                     className="transition-colors duration-300 hover:text-[var(--text)]"
                   >
                     {detail.value}
@@ -56,52 +62,27 @@ export function ContactSection() {
             href="https://wa.me/91XXXXXXXXXX"
             target="_blank"
             rel="noreferrer"
-            className="mt-10 inline-flex rounded-[4px] border-[1.5px] border-[var(--brand)] bg-transparent px-6 py-3 text-sm font-medium text-white transition-colors duration-300 hover:bg-[var(--brand)]"
+            data-cursor="hover"
+            className="mt-10 inline-flex border-[1.5px] border-[var(--brand)] bg-transparent px-6 py-3 text-sm font-medium text-[var(--brand)] transition-colors duration-300 hover:bg-[var(--brand)] hover:text-white"
           >
             WhatsApp CTA
           </a>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <form onSubmit={handleSubmit} className="space-y-7">
-            <div>
-              <label className="label mb-2 block" htmlFor="name">
-                Name
-              </label>
-              <input
-                id="name"
-                name="name"
-                required
-                className="w-full border-0 border-b border-[var(--border)] bg-transparent px-0 py-4 text-[var(--text)] outline-none transition-colors duration-300 placeholder:text-[var(--muted)] focus:border-[var(--brand)]"
-                placeholder="Your name"
-              />
+          <form onSubmit={handleSubmit} className="space-y-7 rounded-xl border border-[var(--border)] bg-white p-8">
+            <div className="field">
+              <input id="name" name="name" required placeholder=" " data-cursor="hover" />
+              <label htmlFor="name">Your Name</label>
             </div>
 
-            <div>
-              <label className="label mb-2 block" htmlFor="email">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="w-full border-0 border-b border-[var(--border)] bg-transparent px-0 py-4 text-[var(--text)] outline-none transition-colors duration-300 placeholder:text-[var(--muted)] focus:border-[var(--brand)]"
-                placeholder="you@example.com"
-              />
+            <div className="field">
+              <input id="email" name="email" type="email" required placeholder=" " data-cursor="hover" />
+              <label htmlFor="email">Email</label>
             </div>
 
-            <div>
-              <label className="label mb-2 block" htmlFor="serviceType">
-                Service Type
-              </label>
-              <select
-                id="serviceType"
-                name="serviceType"
-                defaultValue=""
-                required
-                className="w-full border-0 border-b border-[var(--border)] bg-[var(--surface)] px-0 py-4 text-[var(--text)] outline-none transition-colors duration-300 focus:border-[var(--brand)]"
-              >
+            <div className="field">
+              <select id="serviceType" name="serviceType" defaultValue="" required data-cursor="hover">
                 <option value="" disabled>
                   Select one
                 </option>
@@ -111,27 +92,25 @@ export function ContactSection() {
                 <option>Video Editing</option>
                 <option>Full Campaign</option>
               </select>
+              <label htmlFor="serviceType">Service Type</label>
             </div>
 
-            <div>
-              <label className="label mb-2 block" htmlFor="message">
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={5}
-                required
-                className="w-full resize-none border-0 border-b border-[var(--border)] bg-transparent px-0 py-4 text-[var(--text)] outline-none transition-colors duration-300 placeholder:text-[var(--muted)] focus:border-[var(--brand)]"
-                placeholder="Tell us what you need."
-              />
+            <div className="field">
+              <textarea id="message" name="message" rows={5} required placeholder=" " data-cursor="hover" />
+              <label htmlFor="message">Message</label>
             </div>
 
             <button
               type="submit"
-              className="rounded-[4px] bg-[#E8241A] px-8 py-[14px] font-display text-lg uppercase text-white transition-colors duration-300 hover:bg-[var(--brand-bright)]"
+              data-cursor="hover"
+              className={`inline-flex items-center gap-3 bg-[var(--brand)] px-8 py-[14px] font-display text-lg uppercase text-white transition duration-300 hover:bg-[var(--brand-hover)] active:scale-[0.97] ${
+                status === 'sent' ? 'bg-[#22C55E] hover:bg-[#22C55E]' : ''
+              }`}
             >
-              {submitted ? 'SENT' : 'SEND IT →'}
+              {status === 'sending' && <span className="submit-spinner" />}
+              {status === 'idle' && 'SEND IT →'}
+              {status === 'sending' && 'SENDING...'}
+              {status === 'sent' && '✓ SENT!'}
             </button>
           </form>
         </ScrollReveal>

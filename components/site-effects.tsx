@@ -1,47 +1,51 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
+function WhatsAppIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-[26px] w-[26px]" fill="none" stroke="currentColor" strokeWidth="1.7">
+      <path d="M5.2 19.2 6.3 15A7.7 7.7 0 1 1 9 17.7l-3.8 1.5Z" />
+      <path d="M9.4 8.6c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.3.1.5-.1.7l-.4.5c-.1.2-.1.3 0 .5.4.8 1.2 1.6 2.1 2.1.2.1.4.1.5-.1l.6-.7c.2-.2.4-.2.7-.1l1.5.8c.3.1.4.3.4.6 0 .7-.5 1.4-1.1 1.6-.6.3-2.7.2-4.9-1.7-2.2-1.9-3-4.2-2.8-4.9.1-.3.3-.7.6-.9Z" />
+    </svg>
+  )
+}
+
 export function SiteEffects() {
-  const cursorRef = useRef<HTMLDivElement>(null)
   const transitionRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
-  const target = useRef({ x: -100, y: -100 })
-  const current = useRef({ x: -100, y: -100 })
-  const [hovering, setHovering] = useState(false)
+  const overlayTopRef = useRef<HTMLDivElement>(null)
+  const overlayBottomRef = useRef<HTMLDivElement>(null)
   const [showTop, setShowTop] = useState(false)
+  const [whatsAppVisible, setWhatsAppVisible] = useState(false)
 
   useEffect(() => {
-    let frame = 0
+    let lastScroll = window.scrollY
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    const animateCursor = () => {
-      current.current.x += (target.current.x - current.current.x) * 0.18
-      current.current.y += (target.current.y - current.current.y) * 0.18
-
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${current.current.x}px, ${current.current.y}px, 0) translate(-50%, -50%)`
-      }
-
-      frame = window.requestAnimationFrame(animateCursor)
-    }
-
-    const updateCursor = (event: MouseEvent) => {
-      const node = event.target as HTMLElement | null
-      const interactive = Boolean(node?.closest('a, button, input, textarea, select'))
-
-      if (current.current.x < -50) current.current.x = event.clientX
-      if (current.current.y < -50) current.current.y = event.clientY
-
-      target.current.x = event.clientX
-      target.current.y = event.clientY
-      setHovering(interactive)
-    }
+    window.setTimeout(() => {
+      overlayTopRef.current?.classList.add('open')
+      overlayBottomRef.current?.classList.add('open')
+      document.documentElement.classList.add('site-loaded')
+    }, prefersReducedMotion ? 0 : 900)
+    window.setTimeout(() => document.documentElement.classList.add('loader-done'), prefersReducedMotion ? 0 : 1550)
+    window.setTimeout(() => setWhatsAppVisible(true), prefersReducedMotion ? 0 : 3000)
 
     const updateScroll = () => {
+      const current = window.scrollY
       const max = document.documentElement.scrollHeight - window.innerHeight
-      const progress = max > 0 ? (window.scrollY / max) * 100 : 0
+      const progress = max > 0 ? (current / max) * 100 : 0
+      const nav = document.querySelector<HTMLElement>('[data-site-nav]')
+
       progressRef.current?.style.setProperty('--progress', `${progress}%`)
-      setShowTop(window.scrollY > 500)
+      setShowTop(current > 500)
+
+      if (nav) {
+        nav.style.transform = current > lastScroll && current > 100 ? 'translateY(-100%)' : 'translateY(0)'
+      }
+
+      lastScroll = current
     }
 
     const handleInternalNav = (event: MouseEvent) => {
@@ -57,7 +61,7 @@ export function SiteEffects() {
       event.preventDefault()
       const overlay = transitionRef.current
 
-      if (!overlay || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      if (!overlay || prefersReducedMotion) {
         destination.scrollIntoView({ behavior: 'smooth' })
         return
       }
@@ -74,18 +78,42 @@ export function SiteEffects() {
       window.setTimeout(() => overlay.classList.remove('is-leaving'), 820)
     }
 
-    animateCursor()
-    updateScroll()
+    const scrollObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('in-view')
+        })
+      },
+      { threshold: 0.15 },
+    )
 
-    window.addEventListener('mousemove', updateCursor)
+    document.querySelectorAll<HTMLElement>('.scroll-animate, .animate-children, .process-step, .process-line').forEach((node) => {
+      scrollObserver.observe(node)
+    })
+
+    const navObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          const id = entry.target.id
+          document.querySelectorAll('[data-nav-link]').forEach((link) => link.classList.remove('is-active'))
+          document.querySelector(`[data-nav-link="${id}"]`)?.classList.add('is-active')
+        })
+      },
+      { threshold: 0.5 },
+    )
+
+    document.querySelectorAll<HTMLElement>('section[id]').forEach((section) => navObserver.observe(section))
+
+    updateScroll()
     window.addEventListener('scroll', updateScroll, { passive: true })
     document.addEventListener('click', handleInternalNav)
 
     return () => {
-      window.cancelAnimationFrame(frame)
-      window.removeEventListener('mousemove', updateCursor)
       window.removeEventListener('scroll', updateScroll)
       document.removeEventListener('click', handleInternalNav)
+      scrollObserver.disconnect()
+      navObserver.disconnect()
     }
   }, [])
 
@@ -93,15 +121,34 @@ export function SiteEffects() {
     <>
       <div ref={progressRef} className="scroll-progress" />
       <div ref={transitionRef} className="page-transition" />
-      <div ref={cursorRef} className={`cursor-dot ${hovering ? 'is-hovering' : ''}`} />
+      <div className="page-overlay" aria-hidden="true">
+        <div ref={overlayTopRef} className="overlay-top" />
+        <div className="loader-logo">
+          <div className="loader-glow" />
+          <div className="loader-ring" />
+          <Image src="/sl-logo.png" alt="" width={160} height={160} priority />
+          <p className="loader-name">SL GRAPHICS</p>
+        </div>
+        <div ref={overlayBottomRef} className="overlay-bottom" />
+      </div>
+      <a
+        href="https://wa.me/91XXXXXXXXXX"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Chat on WhatsApp"
+        className={`floating-whatsapp ${whatsAppVisible ? 'is-visible' : ''}`}
+      >
+        <span className="wa-tooltip">Chat with us!</span>
+        <WhatsAppIcon />
+      </a>
       <a
         href="#top"
         aria-label="Back to top"
-        className={`fixed bottom-6 right-6 z-50 grid h-10 w-10 place-items-center rounded-[4px] bg-[var(--brand)] text-xl leading-none text-white transition-all duration-500 hover:bg-[var(--brand-bright)] ${
+        className={`fixed bottom-6 right-24 z-50 grid h-10 w-10 place-items-center bg-[var(--brand)] text-xl leading-none text-white transition-all duration-500 hover:bg-[var(--brand-hover)] ${
           showTop ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
         }`}
       >
-        ↑
+        &uarr;
       </a>
     </>
   )

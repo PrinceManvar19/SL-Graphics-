@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { CharReveal } from './char-reveal'
 import { ScrollReveal } from './scroll-reveal'
 
@@ -31,9 +32,9 @@ const steps = [
 
 export function ProcessSection() {
   return (
-    <section id="process" className="snap-section relative min-h-screen bg-[var(--surface)] py-24">
+    <section id="process" className="snap-section relative min-h-screen bg-[var(--bg)] py-24">
       <div className="container-x">
-        <ScrollReveal className="mb-14 grid gap-6 md:grid-cols-[0.32fr_1fr]">
+        <ScrollReveal className="animate-children mb-14 grid gap-6 md:grid-cols-[0.32fr_1fr]">
           <p className="label">/ PROCESS</p>
           <h2 className="font-display max-w-5xl text-6xl uppercase leading-[0.92] md:text-7xl">
             <CharReveal text="FIVE STEPS." as="span" className="block text-[var(--text)]" />
@@ -42,28 +43,30 @@ export function ProcessSection() {
         </ScrollReveal>
 
         <div className="relative">
-          <div className="process-line absolute left-1/2 top-0 hidden h-full w-px bg-[var(--border)] md:block" />
+          <div className="process-line absolute left-1/2 top-0 hidden w-px md:block" />
           <div className="space-y-10 md:space-y-4">
             {steps.map((step, index) => {
               const reverse = index % 2 === 1
 
               return (
-                <ScrollReveal key={step.number} delay={index * 0.05}>
-                  <div className="grid min-h-[128px] items-center gap-6 md:grid-cols-2 md:gap-20">
-                    <div className={reverse ? 'md:order-2 md:text-left' : 'md:text-right'}>
-                      <div className="font-display text-[120px] leading-none text-[rgba(232,36,26,0.08)] md:text-[160px]">
-                        {step.number}
-                      </div>
-                    </div>
-                    <div className={reverse ? 'md:order-1 md:text-right' : ''}>
-                      <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--brand)]">{step.number}</p>
-                      <h3 className="mt-2 font-display text-[28px] uppercase leading-none text-[var(--text)]">{step.title}</h3>
-                      <p className="mt-4 max-w-xl text-[15px] leading-[1.7] text-[var(--muted)] md:ml-0 md:max-w-lg">
-                        {step.description}
-                      </p>
+                <div
+                  key={step.number}
+                  className="process-step grid min-h-[128px] items-center gap-6 md:grid-cols-2 md:gap-20"
+                  style={{ '--step-x': reverse ? '50px' : '-50px' } as CSSProperties}
+                >
+                  <div className={reverse ? 'md:order-2 md:text-left' : 'md:text-right'}>
+                    <div className="ghost-number font-display text-[120px] leading-none text-[var(--brand)] md:text-[160px]">
+                      {step.number}
                     </div>
                   </div>
-                </ScrollReveal>
+                  <div className={`step-content rounded-xl border border-[var(--border)] bg-white p-6 ${reverse ? 'md:order-1 md:text-right' : ''}`}>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[var(--brand)]">{step.number}</p>
+                    <h3 className="mt-2 font-display text-[28px] uppercase leading-none text-[var(--text)]">{step.title}</h3>
+                    <p className="mt-4 max-w-xl text-[15px] leading-[1.7] text-[var(--secondary)] md:ml-0 md:max-w-lg">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
               )
             })}
           </div>

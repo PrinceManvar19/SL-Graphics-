@@ -13,54 +13,19 @@ type Project = {
 }
 
 const projects: Project[] = [
-  {
-    title: 'Radhe Traders',
-    type: 'Wholesale Brand',
-    category: 'Logo',
-    initials: 'RT',
-    gradient: 'linear-gradient(135deg, #1A0505, #3D0A0A)',
-  },
-  {
-    title: 'Viral Reels Pack',
-    type: 'Creator Studio',
-    category: 'Video',
-    gradient: 'linear-gradient(135deg, #050A1A, #0A1A3D)',
-  },
-  {
-    title: 'Diwali Campaign',
-    type: 'Retail Poster',
-    category: 'Poster',
-    gradient: 'linear-gradient(135deg, #051A05, #0A3D0A)',
-  },
-  {
-    title: 'CloudFit Identity',
-    type: 'Fitness Startup',
-    category: 'Brand',
-    gradient: 'linear-gradient(135deg, #0F051A, #1A0A3D)',
-  },
-  {
-    title: 'Highway Banner',
-    type: 'Real Estate',
-    category: 'Poster',
-    gradient: 'linear-gradient(135deg, #1A100A, #3D2010)',
-  },
-  {
-    title: 'Wedding Film Edit',
-    type: 'Film Production',
-    category: 'Video',
-    gradient: 'linear-gradient(135deg, #050F1A, #0A2040)',
-  },
+  { title: 'Radhe Traders', type: 'Wholesale Brand', category: 'Logo', initials: 'RT', gradient: 'linear-gradient(135deg, #1A0505, #3D0A0A)' },
+  { title: 'Viral Reels Pack', type: 'Creator Studio', category: 'Video', gradient: 'linear-gradient(135deg, #050A1A, #0A1A3D)' },
+  { title: 'Diwali Campaign', type: 'Retail Poster', category: 'Poster', gradient: 'linear-gradient(135deg, #051A05, #0A3D0A)' },
+  { title: 'CloudFit Identity', type: 'Fitness Startup', category: 'Brand', gradient: 'linear-gradient(135deg, #0F051A, #1A0A3D)' },
+  { title: 'Highway Banner', type: 'Real Estate', category: 'Poster', gradient: 'linear-gradient(135deg, #1A100A, #3D2010)' },
+  { title: 'Wedding Film Edit', type: 'Film Production', category: 'Video', gradient: 'linear-gradient(135deg, #050F1A, #0A2040)' },
 ]
 
 const filters = ['All', 'Logo', 'Video', 'Poster', 'Brand']
 
 function ProjectForeground({ project }: { project: Project }) {
   if (project.category === 'Logo') {
-    return (
-      <div className="font-display text-[88px] leading-none text-white/82 md:text-[104px]">
-        {project.initials}
-      </div>
-    )
+    return <div className="font-display text-[88px] leading-none text-white/82 md:text-[104px]">{project.initials}</div>
   }
 
   if (project.category === 'Video') {
@@ -94,9 +59,9 @@ export function PortfolioSection() {
   const filteredProjects = projects.filter((project) => activeFilter === 'All' || project.category === activeFilter)
 
   return (
-    <section id="work" className="snap-section min-h-screen bg-[var(--bg)] py-24">
+    <section id="work" className="snap-section min-h-screen bg-[var(--surface-alt)] py-24">
       <div className="container-x">
-        <ScrollReveal className="mb-10 grid gap-6 md:grid-cols-[0.32fr_1fr]">
+        <ScrollReveal className="animate-children mb-10 grid gap-6 md:grid-cols-[0.32fr_1fr]">
           <p className="label">/ SELECTED WORK</p>
           <div>
             <h2 className="font-display max-w-4xl text-6xl uppercase leading-[0.92] md:text-7xl">
@@ -109,6 +74,7 @@ export function PortfolioSection() {
                   key={filter}
                   type="button"
                   onClick={() => setActiveFilter(filter)}
+                  data-cursor="hover"
                   className={`rounded-[4px] border px-4 py-2 text-[13px] font-medium uppercase tracking-[0.15em] transition-colors duration-300 ${
                     activeFilter === filter
                       ? 'border-[var(--brand)] bg-[var(--brand)] text-white'
@@ -125,16 +91,16 @@ export function PortfolioSection() {
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project, index) => (
             <ScrollReveal key={project.title} delay={index * 0.04}>
-              <article className="group overflow-hidden rounded-[8px] border border-[var(--border)] bg-[var(--surface)] transition duration-300 hover:border-[var(--brand)] hover:shadow-[0_0_24px_rgba(232,36,26,0.2)]">
+              <article className="portfolio-card group overflow-hidden border border-[var(--border)] bg-white">
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <div className="absolute inset-0 transition-transform duration-300 group-hover:scale-[1.04]" style={{ background: project.gradient }}>
+                  <div className="card-visual absolute inset-0" style={{ background: project.gradient }}>
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(242,240,236,0.14),transparent_58%)]" />
                     <div className="absolute inset-0 grid place-items-center">
                       <ProjectForeground project={project} />
                     </div>
                   </div>
-                  <div className="absolute inset-0 grid translate-y-full place-items-center bg-[rgba(232,36,26,0.85)] text-sm font-medium text-white transition-transform duration-300 group-hover:translate-y-0">
-                    View Project →
+                  <div className="card-overlay">
+                    <span className="text-sm font-medium text-white">View Project →</span>
                   </div>
                 </div>
                 <div className="border-t border-[var(--border)] p-5">
