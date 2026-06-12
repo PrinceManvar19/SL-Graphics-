@@ -1,9 +1,9 @@
 'use client'
 
-import Image from 'next/image'
 import { MessageCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { CharReveal } from './char-reveal'
+import { InkCanvas } from './ink-canvas'
 import { MarqueeSection } from './marquee-section'
 
 const stats = [
@@ -40,19 +40,6 @@ export function HeroSection() {
     frame = window.requestAnimationFrame(tick)
 
     return () => window.cancelAnimationFrame(frame)
-  }, [])
-
-  useEffect(() => {
-    const moveLogo = (event: MouseEvent) => {
-      const x = (event.clientX / window.innerWidth - 0.5) * 18
-      const y = (event.clientY / window.innerHeight - 0.5) * 18
-      const logo = document.querySelector<HTMLElement>('.hero-logo')
-
-      if (logo) logo.style.transform = `translate(${x}px, ${y}px)`
-    }
-
-    document.addEventListener('mousemove', moveLogo)
-    return () => document.removeEventListener('mousemove', moveLogo)
   }, [])
 
   return (
@@ -100,17 +87,8 @@ export function HeroSection() {
           </div>
         </div>
 
-        <div className="relative hidden h-full min-h-[520px] items-center justify-center lg:flex">
-          <div className="hero-logo-wrap hero-logo-halo relative grid place-items-center overflow-hidden rounded-full">
-            <Image
-              src="/sl-logo-cutout.png"
-              alt="SL Graphics logo"
-              width={420}
-              height={420}
-              priority
-              className="hero-logo w-[86%] object-contain"
-            />
-          </div>
+        <div className="relative flex min-h-[260px] items-center justify-center lg:min-h-[520px]">
+          <InkCanvas />
         </div>
       </div>
       <MarqueeSection />

@@ -3,6 +3,8 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
+const loaderLetters = 'SL GRAPHICS'.split('')
+
 function WhatsAppIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24" className="h-[26px] w-[26px]" fill="none" stroke="currentColor" strokeWidth="1.7">
@@ -15,22 +17,37 @@ function WhatsAppIcon() {
 export function SiteEffects() {
   const transitionRef = useRef<HTMLDivElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
-  const overlayTopRef = useRef<HTMLDivElement>(null)
-  const overlayBottomRef = useRef<HTMLDivElement>(null)
   const [showTop, setShowTop] = useState(false)
   const [whatsAppVisible, setWhatsAppVisible] = useState(false)
+  const [showLoader, setShowLoader] = useState(true)
+  const [loaderExiting, setLoaderExiting] = useState(false)
 
   useEffect(() => {
     let lastScroll = window.scrollY
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    window.setTimeout(() => {
-      overlayTopRef.current?.classList.add('open')
-      overlayBottomRef.current?.classList.add('open')
-      document.documentElement.classList.add('site-loaded')
-    }, prefersReducedMotion ? 0 : 900)
-    window.setTimeout(() => document.documentElement.classList.add('loader-done'), prefersReducedMotion ? 0 : 1550)
-    window.setTimeout(() => setWhatsAppVisible(true), prefersReducedMotion ? 0 : 3000)
+    if (prefersReducedMotion) {
+      setShowLoader(false)
+      document.documentElement.classList.add('site-loaded', 'loader-done')
+    }
+
+    const revealDelay = 3200
+    const removeDelay = 3500
+    const timers = [
+      ...(prefersReducedMotion
+        ? []
+        : [
+            window.setTimeout(() => {
+              setLoaderExiting(true)
+              document.documentElement.classList.add('site-loaded')
+            }, revealDelay),
+            window.setTimeout(() => {
+              setShowLoader(false)
+              document.documentElement.classList.add('loader-done')
+            }, removeDelay),
+          ]),
+      window.setTimeout(() => setWhatsAppVisible(true), prefersReducedMotion ? 0 : 3600),
+    ]
 
     const updateScroll = () => {
       const current = window.scrollY
@@ -110,6 +127,7 @@ export function SiteEffects() {
     document.addEventListener('click', handleInternalNav)
 
     return () => {
+      timers.forEach(window.clearTimeout)
       window.removeEventListener('scroll', updateScroll)
       document.removeEventListener('click', handleInternalNav)
       scrollObserver.disconnect()
@@ -121,16 +139,22 @@ export function SiteEffects() {
     <>
       <div ref={progressRef} className="scroll-progress" />
       <div ref={transitionRef} className="page-transition" />
-      <div className="page-overlay" aria-hidden="true">
-        <div ref={overlayTopRef} className="overlay-top" />
-        <div className="loader-logo">
-          <div className="loader-glow" />
-          <div className="loader-ring" />
-          <Image src="/sl-logo.png" alt="" width={160} height={160} priority />
-          <p className="loader-name">SL GRAPHICS</p>
+      {showLoader && (
+        <div className={`page-overlay ${loaderExiting ? 'is-exiting' : ''}`} aria-hidden="true">
+          <div className="loader-sequence">
+            <span className="loader-line loader-line--intro" />
+            <Image className="loader-logo" src="/sl-logo.png" alt="" width={160} height={160} priority />
+            <p className="loader-name" aria-label="SL Graphics">
+              {loaderLetters.map((letter, index) => (
+                <span key={`${letter}-${index}`} style={{ '--letter-index': index } as React.CSSProperties}>
+                  {letter === ' ' ? '\u00a0' : letter}
+                </span>
+              ))}
+            </p>
+            <span className="loader-line loader-line--outro" />
+          </div>
         </div>
-        <div ref={overlayBottomRef} className="overlay-bottom" />
-      </div>
+      )}
       <a
         href="https://wa.me/91XXXXXXXXXX"
         target="_blank"

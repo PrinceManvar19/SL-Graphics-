@@ -14,16 +14,18 @@ export default function Home() {
   return (
     <main id="top" className="overflow-x-hidden bg-[var(--bg)] text-[var(--text)]">
       <SiteEffects />
-      <Navbar />
-      <HeroSection />
-      <ServicesSection />
-      <PortfolioSection />
-      <ProcessSection />
-      <TestimonialsSection />
-      <TrustedBySection />
-      <CTABannerSection />
-      <ContactSection />
-      <Footer />
+      <div className="site-content">
+        <Navbar />
+        <HeroSection />
+        <ServicesSection />
+        <PortfolioSection />
+        <ProcessSection />
+        <TestimonialsSection />
+        <TrustedBySection />
+        <CTABannerSection />
+        <ContactSection />
+        <Footer />
+      </div>
     </main>
   )
 }
