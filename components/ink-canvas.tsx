@@ -2,20 +2,31 @@
 
 import { useEffect, useRef } from 'react'
 
-type Dot = {
-  originX: number
-  originY: number
-  currentX: number
-  currentY: number
+type GridDot = {
+  x: number
+  y: number
+  ox: number
+  oy: number
+  vx: number
+  vy: number
   radius: number
-  opacity: number
   color: string
-  isAccent: boolean
+  accent: boolean
 }
 
-const GRID_GAP = 28
-const DOT_COLOR = '#000000'
-const ACCENT_COLOR = '#e8192c'
+type Planet = {
+  orbit: number
+  radius: number
+  speed: number
+  angle: number
+  color: string
+  atmosphere?: string
+  trail: Array<{ x: number; y: number }>
+}
+
+const GRID_SIZE = 20
+const GRAVITY_RADIUS = 90
+const ACCENT_COLOR = '#E53935'
 
 export function InkCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -23,59 +34,52 @@ export function InkCanvas() {
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-
     const context = canvas.getContext('2d')
     if (!context) return
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let width = 0
     let height = 0
-    let dots: Dot[] = []
-    let animationFrame = 0
-    let previousTime = window.performance.now()
-    let lastPointerMove = previousTime
-    let isPointerInside = false
+    let dots: GridDot[] = []
+    let planets: Planet[] = []
+    let frame = 0
+    let previousTime = performance.now()
 
-    const pointer = { x: 0, y: 0 }
-    const cursor = { x: 0, y: 0, opacity: 0 }
+    const buildScene = () => {
+      const padding = Math.max(22, Math.min(width, height) * 0.07)
+      const stepX = (width - padding * 2) / (GRID_SIZE - 1)
+      const stepY = (height - padding * 2) / (GRID_SIZE - 1)
+      const accentIndexes = new Set([17, 42, 68, 93, 126, 159, 188, 231, 274, 307, 348, 386])
+      const grayTones = ['#ccc', '#aaa', '#777']
 
-    const createGrid = () => {
-      const columns = Math.max(1, Math.floor(width / GRID_GAP))
-      const rows = Math.max(1, Math.floor(height / GRID_GAP))
-      const offsetX = (width - (columns - 1) * GRID_GAP) / 2
-      const offsetY = (height - (rows - 1) * GRID_GAP) / 2
-      const nextDots: Dot[] = []
-
-      for (let row = 0; row < rows; row += 1) {
-        for (let column = 0; column < columns; column += 1) {
-          const isRhythmDot = column % 7 === 0 && row % 7 === 0
-          const originX = offsetX + column * GRID_GAP
-          const originY = offsetY + row * GRID_GAP
-          nextDots.push({
-            originX,
-            originY,
-            currentX: originX,
-            currentY: originY,
-            radius: isRhythmDot ? 3.5 : 2,
-            opacity: isRhythmDot ? 0.35 : 0.18,
-            color: DOT_COLOR,
-            isAccent: false,
+      dots = []
+      for (let row = 0; row < GRID_SIZE; row += 1) {
+        for (let column = 0; column < GRID_SIZE; column += 1) {
+          const index = row * GRID_SIZE + column
+          const x = padding + column * stepX
+          const y = padding + row * stepY
+          const accent = accentIndexes.has(index)
+          dots.push({
+            x,
+            y,
+            ox: x,
+            oy: y,
+            vx: 0,
+            vy: 0,
+            radius: accent ? 4 : 2.5,
+            color: accent ? ACCENT_COLOR : grayTones[(row + column * 2) % grayTones.length],
+            accent,
           })
         }
       }
 
-      const accentCount = Math.min(4, nextDots.length)
-      const availableIndexes = nextDots.map((_, index) => index)
-      for (let index = 0; index < accentCount; index += 1) {
-        const choice = Math.floor(Math.random() * availableIndexes.length)
-        const dot = nextDots[availableIndexes.splice(choice, 1)[0]]
-        dot.radius = 3
-        dot.opacity = 0.7
-        dot.color = ACCENT_COLOR
-        dot.isAccent = true
-      }
-
-      dots = nextDots
+      const orbitScale = Math.min(1, (Math.min(width, height) - 48) / 370)
+      planets = [
+        { orbit: 52 * orbitScale, radius: 2.4, speed: 1.18, angle: 0.4, color: '#9b8f83', trail: [] },
+        { orbit: 82 * orbitScale, radius: 3.5, speed: 0.82, angle: 2.1, color: '#d2a66f', trail: [] },
+        { orbit: 115 * orbitScale, radius: 4.2, speed: 0.62, angle: 4.2, color: '#4d86bd', atmosphere: 'rgba(77,134,189,0.24)', trail: [] },
+        { orbit: 148 * orbitScale, radius: 3.2, speed: 0.49, angle: 1.3, color: '#b85f45', trail: [] },
+        { orbit: 185 * orbitScale, radius: 7, speed: 0.34, angle: 3.25, color: '#d29a55', trail: [] },
+      ]
     }
 
     const resize = () => {
@@ -86,134 +90,119 @@ export function InkCanvas() {
       canvas.width = Math.round(width * dpr)
       canvas.height = Math.round(height * dpr)
       context.setTransform(dpr, 0, 0, dpr, 0, 0)
-      createGrid()
-
-      pointer.x = width / 2
-      pointer.y = height / 2
-      cursor.x = pointer.x
-      cursor.y = pointer.y
-
-      if (reducedMotion) drawStaticGrid()
-    }
-
-    const drawDot = (dot: Dot, opacity = dot.opacity) => {
-      context.beginPath()
-      context.globalAlpha = opacity
-      context.fillStyle = dot.color
-      context.arc(dot.currentX, dot.currentY, dot.radius, 0, Math.PI * 2)
-      context.fill()
-    }
-
-    function drawStaticGrid() {
-      context.clearRect(0, 0, width, height)
-      dots.forEach((dot) => drawDot(dot))
-      context.globalAlpha = 1
+      buildScene()
     }
 
     const render = (now: number) => {
-      const delta = Math.min(40, now - previousTime)
+      const delta = Math.min((now - previousTime) / 16.667, 2)
       previousTime = now
-      const isIdle = !isPointerInside || now - lastPointerMove >= 3000
-      const waveAge = (now % 5000) / 1000
-      const waveRadius = waveAge * 120
-
+      const centerX = width / 2
+      const centerY = height / 2
       context.clearRect(0, 0, width, height)
 
-      dots.forEach((dot) => {
-        let targetX = dot.originX
-        let targetY = dot.originY
-        let opacity = dot.opacity
-
-        if (!isIdle) {
-          const dx = dot.originX - pointer.x
-          const dy = dot.originY - pointer.y
-          const distance = Math.hypot(dx, dy)
-          const influenceRadius = dot.isAccent ? 240 : 120
-          const maxPush = dot.isAccent ? 50 : 30
-
-          if (distance < influenceRadius) {
-            const push = (1 - distance / influenceRadius) * maxPush
-            const safeDistance = Math.max(distance, 0.001)
-            targetX += (dx / safeDistance) * push
-            targetY += (dy / safeDistance) * push
-          }
-        } else {
-          const centerDistance = Math.hypot(dot.originX - width / 2, dot.originY - height / 2)
-          const distanceFromWave = centerDistance - waveRadius
-          if (Math.abs(distanceFromWave) < 42) {
-            const waveProgress = (distanceFromWave + 42) / 84
-            const wave = Math.sin(waveProgress * Math.PI)
-            targetY -= wave * 8
-            if (dot.isAccent) opacity = 0.7 + wave * 0.3
-          }
-        }
-
-        dot.currentX += (targetX - dot.currentX) * 0.12
-        dot.currentY += (targetY - dot.currentY) * 0.12
-        drawDot(dot, opacity)
+      planets.forEach((planet) => {
+        planet.angle += planet.speed * 0.008 * delta
+        const x = centerX + Math.cos(planet.angle) * planet.orbit
+        const y = centerY + Math.sin(planet.angle) * planet.orbit
+        planet.trail.push({ x, y })
+        if (planet.trail.length > 38) planet.trail.shift()
       })
 
-      const cursorEase = 1 - Math.exp(-delta / 80)
-      cursor.x += (pointer.x - cursor.x) * cursorEase
-      cursor.y += (pointer.y - cursor.y) * cursorEase
-      cursor.opacity += ((isPointerInside ? 0.6 : 0) - cursor.opacity) * 0.14
+      dots.forEach((dot) => {
+        planets.forEach((planet) => {
+          const position = planet.trail[planet.trail.length - 1]
+          if (!position) return
+          const dx = position.x - dot.x
+          const dy = position.y - dot.y
+          const distance = Math.hypot(dx, dy)
+          if (distance > 0 && distance < GRAVITY_RADIUS) {
+            const force = (1 - distance / GRAVITY_RADIUS) * 0.28 * planet.radius * 0.9
+            dot.vx += (dx / distance) * force * delta
+            dot.vy += (dy / distance) * force * delta
+          }
+        })
 
-      if (cursor.opacity > 0.01) {
+        dot.vx += (dot.ox - dot.x) * 0.09 * delta
+        dot.vy += (dot.oy - dot.y) * 0.09 * delta
+        dot.vx *= Math.pow(0.72, delta)
+        dot.vy *= Math.pow(0.72, delta)
+        dot.x += dot.vx * delta
+        dot.y += dot.vy * delta
+
+        const displacement = Math.min(Math.hypot(dot.x - dot.ox, dot.y - dot.oy) / 24, 1)
         context.beginPath()
-        context.globalAlpha = cursor.opacity
-        context.strokeStyle = ACCENT_COLOR
-        context.lineWidth = 1.5
-        context.arc(cursor.x, cursor.y, 6, 0, Math.PI * 2)
+        context.globalAlpha = dot.accent ? 0.72 + displacement * 0.28 : 0.55
+        context.fillStyle = dot.color
+        context.arc(dot.x, dot.y, dot.radius * (1 + displacement * 0.5), 0, Math.PI * 2)
+        context.fill()
+      })
+
+      planets.forEach((planet) => {
+        context.beginPath()
+        context.globalAlpha = 0.06
+        context.strokeStyle = '#111111'
+        context.lineWidth = 0.5
+        context.arc(centerX, centerY, planet.orbit, 0, Math.PI * 2)
         context.stroke()
-      }
+
+        planet.trail.forEach((point, index) => {
+          const progress = index / Math.max(planet.trail.length - 1, 1)
+          context.beginPath()
+          context.globalAlpha = progress * 0.35
+          context.fillStyle = planet.color
+          context.arc(point.x, point.y, Math.max(0.5, planet.radius * 0.5 * progress), 0, Math.PI * 2)
+          context.fill()
+        })
+
+        const position = planet.trail[planet.trail.length - 1]
+        if (!position) return
+        if (planet.atmosphere) {
+          context.beginPath()
+          context.globalAlpha = 1
+          context.strokeStyle = planet.atmosphere
+          context.lineWidth = 2
+          context.arc(position.x, position.y, planet.radius + 3, 0, Math.PI * 2)
+          context.stroke()
+        }
+        context.beginPath()
+        context.globalAlpha = 1
+        context.fillStyle = planet.color
+        context.arc(position.x, position.y, planet.radius, 0, Math.PI * 2)
+        context.fill()
+      })
+
+      const pulse = 0.15 + (Math.sin(now * 0.003) + 1) * 0.1
+      context.beginPath()
+      context.globalAlpha = pulse
+      context.strokeStyle = ACCENT_COLOR
+      context.lineWidth = 4
+      context.arc(centerX, centerY, 12, 0, Math.PI * 2)
+      context.stroke()
+      context.beginPath()
+      context.globalAlpha = 1
+      context.fillStyle = ACCENT_COLOR
+      context.arc(centerX, centerY, 7, 0, Math.PI * 2)
+      context.fill()
 
       context.globalAlpha = 1
-      animationFrame = window.requestAnimationFrame(render)
-    }
-
-    const handlePointerEnter = (event: PointerEvent) => {
-      const bounds = canvas.getBoundingClientRect()
-      pointer.x = event.clientX - bounds.left
-      pointer.y = event.clientY - bounds.top
-      cursor.x = pointer.x
-      cursor.y = pointer.y
-      isPointerInside = true
-      lastPointerMove = window.performance.now()
-    }
-
-    const handlePointerMove = (event: PointerEvent) => {
-      const bounds = canvas.getBoundingClientRect()
-      pointer.x = event.clientX - bounds.left
-      pointer.y = event.clientY - bounds.top
-      lastPointerMove = window.performance.now()
-    }
-
-    const handlePointerLeave = () => {
-      isPointerInside = false
+      frame = window.requestAnimationFrame(render)
     }
 
     const observer = new ResizeObserver(resize)
     observer.observe(canvas)
-    canvas.addEventListener('pointerenter', handlePointerEnter)
-    canvas.addEventListener('pointermove', handlePointerMove)
-    canvas.addEventListener('pointerleave', handlePointerLeave)
     resize()
-
-    if (!reducedMotion) animationFrame = window.requestAnimationFrame(render)
+    frame = window.requestAnimationFrame(render)
 
     return () => {
       observer.disconnect()
-      window.cancelAnimationFrame(animationFrame)
-      canvas.removeEventListener('pointerenter', handlePointerEnter)
-      canvas.removeEventListener('pointermove', handlePointerMove)
-      canvas.removeEventListener('pointerleave', handlePointerLeave)
+      window.cancelAnimationFrame(frame)
     }
   }, [])
 
   return (
-    <div className="hero-logo-wrap particle-grid-visual" aria-label="Interactive SL Graphics particle grid">
+    <div className="hero-logo-wrap particle-grid-visual solar-grid-panel" aria-label="Animated solar system bending a dot grid">
       <canvas ref={canvasRef} className="particle-grid-canvas" />
-      <span className="particle-grid-label">FORM / MOTION / IMPACT</span>
+      <span className="particle-grid-label">ORBIT / MOTION / IMPACT</span>
       <span className="particle-grid-corner" aria-hidden="true" />
     </div>
   )

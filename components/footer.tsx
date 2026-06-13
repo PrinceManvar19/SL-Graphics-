@@ -31,12 +31,7 @@ function YouTubeIcon() {
 }
 
 function WhatsAppIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7">
-      <path d="M5.2 19.2 6.3 15A7.7 7.7 0 1 1 9 17.7l-3.8 1.5Z" />
-      <path d="M9.4 8.6c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.7 1.6c.1.3.1.5-.1.7l-.4.5c-.1.2-.1.3 0 .5.4.8 1.2 1.6 2.1 2.1.2.1.4.1.5-.1l.6-.7c.2-.2.4-.2.7-.1l1.5.8c.3.1.4.3.4.6 0 .7-.5 1.4-1.1 1.6-.6.3-2.7.2-4.9-1.7-2.2-1.9-3-4.2-2.8-4.9.1-.3.3-.7.6-.9Z" />
-    </svg>
-  )
+  return <i className="fa-brands fa-whatsapp text-xl" style={{ color: 'rgb(255, 255, 255)' }} aria-hidden="true" />
 }
 
 export function Footer() {

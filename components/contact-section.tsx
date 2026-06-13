@@ -12,18 +12,48 @@ const details = [
 ]
 
 export function ContactSection() {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle')
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [serviceError, setServiceError] = useState(false)
+  const [formError, setFormError] = useState('')
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    const form = event.currentTarget
+    const formData = new FormData(form)
+
+    if (!formData.get('service')) {
+      setServiceError(true)
+      return
+    }
+
+    const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT
+    if (!endpoint) {
+      setStatus('error')
+      setFormError('Form delivery is not configured yet. Please use email or WhatsApp.')
+      return
+    }
+
+    setServiceError(false)
+    setFormError('')
     setStatus('sending')
+    window.dispatchEvent(new Event('sl-loading-start'))
 
-    window.setTimeout(() => {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' },
+      })
+      if (!response.ok) throw new Error('Unable to send message')
       setStatus('sent')
-      event.currentTarget.reset()
-    }, 1500)
-
-    window.setTimeout(() => setStatus('idle'), 3500)
+      form.reset()
+      window.setTimeout(() => setStatus('idle'), 2500)
+    } catch {
+      setStatus('error')
+      setFormError('Message could not be sent. Please try again or contact us directly.')
+    } finally {
+      window.dispatchEvent(new Event('sl-loading-end'))
+    }
   }
 
   return (
@@ -82,9 +112,22 @@ export function ContactSection() {
             </div>
 
             <div className="field">
-              <select id="serviceType" name="serviceType" defaultValue="" required data-cursor="hover">
+              <select
+                id="service"
+                name="service"
+                defaultValue=""
+                required
+                aria-invalid={serviceError}
+                aria-describedby={serviceError ? 'service-error' : undefined}
+                onChange={() => setServiceError(false)}
+                onInvalid={(event) => {
+                  event.preventDefault()
+                  setServiceError(true)
+                }}
+                data-cursor="hover"
+              >
                 <option value="" disabled>
-                  Select one
+                  Select a service
                 </option>
                 <option>Logo Design</option>
                 <option>Brand Identity</option>
@@ -92,7 +135,8 @@ export function ContactSection() {
                 <option>Video Editing</option>
                 <option>Full Campaign</option>
               </select>
-              <label htmlFor="serviceType">Service Type</label>
+              <label htmlFor="service">Service Type</label>
+              {serviceError && <p id="service-error" className="field-error">Please select a service</p>}
             </div>
 
             <div className="field">
@@ -106,12 +150,14 @@ export function ContactSection() {
               className={`inline-flex items-center gap-3 bg-[var(--brand)] px-8 py-[14px] font-display text-lg uppercase text-white transition duration-300 hover:bg-[var(--brand-hover)] active:scale-[0.97] ${
                 status === 'sent' ? 'bg-[#22C55E] hover:bg-[#22C55E]' : ''
               }`}
+              disabled={status === 'sending'}
             >
               {status === 'sending' && <span className="submit-spinner" />}
-              {status === 'idle' && 'SEND IT →'}
+              {(status === 'idle' || status === 'error') && 'SEND IT →'}
               {status === 'sending' && 'SENDING...'}
               {status === 'sent' && '✓ SENT!'}
             </button>
+            {formError && <p className="text-sm text-[var(--brand)]" role="alert">{formError}</p>}
           </form>
         </ScrollReveal>
       </div>

@@ -50,7 +50,7 @@ export function CharReveal({ text, as: Tag = 'span', className = '', delay = 0 }
   }, [])
 
   return (
-    <Tag ref={ref} className={`char-reveal ${className}`}>
+    <Tag ref={(node) => { ref.current = node }} className={`char-reveal ${className}`}>
       {chars.map((char, index) => (
         <span
           key={`${char}-${index}`}
