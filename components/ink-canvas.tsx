@@ -26,6 +26,7 @@ type Planet = {
 
 const GRID_SIZE = 20
 const GRAVITY_RADIUS = 90
+const POINTER_RADIUS = 130
 const ACCENT_COLOR = '#E53935'
 
 export function InkCanvas() {
@@ -43,6 +44,8 @@ export function InkCanvas() {
     let planets: Planet[] = []
     let frame = 0
     let previousTime = performance.now()
+    let isPointerInside = false
+    const pointer = { x: 0, y: 0 }
 
     const buildScene = () => {
       const padding = Math.max(22, Math.min(width, height) * 0.07)
@@ -122,6 +125,19 @@ export function InkCanvas() {
           }
         })
 
+        if (isPointerInside) {
+          const dx = dot.x - pointer.x
+          const dy = dot.y - pointer.y
+          const distance = Math.hypot(dx, dy)
+          const influenceRadius = dot.accent ? POINTER_RADIUS * 1.35 : POINTER_RADIUS
+
+          if (distance > 0 && distance < influenceRadius) {
+            const force = (1 - distance / influenceRadius) * (dot.accent ? 2.2 : 1.5)
+            dot.vx += (dx / distance) * force * delta
+            dot.vy += (dy / distance) * force * delta
+          }
+        }
+
         dot.vx += (dot.ox - dot.x) * 0.09 * delta
         dot.vy += (dot.oy - dot.y) * 0.09 * delta
         dot.vx *= Math.pow(0.72, delta)
@@ -188,14 +204,39 @@ export function InkCanvas() {
       frame = window.requestAnimationFrame(render)
     }
 
+    const updatePointer = (event: PointerEvent) => {
+      const bounds = canvas.getBoundingClientRect()
+      pointer.x = event.clientX - bounds.left
+      pointer.y = event.clientY - bounds.top
+    }
+
+    const handlePointerEnter = (event: PointerEvent) => {
+      updatePointer(event)
+      isPointerInside = true
+    }
+
+    const handlePointerMove = (event: PointerEvent) => {
+      updatePointer(event)
+    }
+
+    const handlePointerLeave = () => {
+      isPointerInside = false
+    }
+
     const observer = new ResizeObserver(resize)
     observer.observe(canvas)
+    canvas.addEventListener('pointerenter', handlePointerEnter)
+    canvas.addEventListener('pointermove', handlePointerMove)
+    canvas.addEventListener('pointerleave', handlePointerLeave)
     resize()
     frame = window.requestAnimationFrame(render)
 
     return () => {
       observer.disconnect()
       window.cancelAnimationFrame(frame)
+      canvas.removeEventListener('pointerenter', handlePointerEnter)
+      canvas.removeEventListener('pointermove', handlePointerMove)
+      canvas.removeEventListener('pointerleave', handlePointerLeave)
     }
   }, [])
 

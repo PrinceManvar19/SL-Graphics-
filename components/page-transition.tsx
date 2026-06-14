@@ -6,6 +6,9 @@ import { useEffect, useRef, useState } from 'react'
 
 type Phase = 'idle' | 'entering' | 'holding' | 'leaving'
 
+const TRANSITION_DURATION = 650
+const TRANSITION_HOLD = 500
+
 export function PageTransition() {
   const router = useRouter()
   const pathname = usePathname()
@@ -20,7 +23,7 @@ export function PageTransition() {
     const timer = window.setTimeout(() => {
       setPhase('idle')
       setLoading(false)
-    }, 350)
+    }, TRANSITION_DURATION)
     return () => window.clearTimeout(timer)
   }, [pathname])
 
@@ -44,13 +47,13 @@ export function PageTransition() {
             later(() => {
               setPhase('idle')
               setLoading(false)
-            }, 350)
+            }, TRANSITION_DURATION)
           } else {
             pendingPath.current = url.pathname
             router.push(`${url.pathname}${url.search}${url.hash}`)
           }
-        }, 150)
-      }, 350)
+        }, TRANSITION_HOLD)
+      }, TRANSITION_DURATION)
     }
 
     const handleClick = (event: MouseEvent) => {
@@ -83,7 +86,7 @@ export function PageTransition() {
       <div className={`transition-panel phase-${phase}`} aria-hidden="true">
         <div className="transition-mark">
           <span className="transition-mark-line" />
-          <Image src="/sl-logo-cutout.png" alt="" width={50} height={50} className="transition-logo" />
+          <Image src="/sl-logo-cutout.png" alt="" width={90} height={90} className="transition-logo" />
         </div>
       </div>
     </>

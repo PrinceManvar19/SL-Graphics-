@@ -81,7 +81,7 @@ export function Footer() {
         </div>
 
         <p className="pt-8 text-xs uppercase tracking-[0.15em] text-[#CCCCCC]">
-          © {year} SL Graphics. All rights reserved. Made in UP.
+          © {year} SL Graphics. All rights reserved.
         </p>
       </div>
     </footer>

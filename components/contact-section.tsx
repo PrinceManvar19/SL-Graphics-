@@ -7,7 +7,7 @@ import { ScrollReveal } from './scroll-reveal'
 const details = [
   { label: 'Email', value: 'hello@slgraphics.in', href: 'mailto:hello@slgraphics.in' },
   { label: 'Phone', value: '+91 98XXX XXXXX', href: 'tel:+9198XXXXXXXX' },
-  { label: 'Location', value: 'Uttar Pradesh, India' },
+  { label: 'Availability', value: 'Working worldwide' },
   { label: 'WhatsApp', value: 'Chat on WhatsApp', href: 'https://wa.me/91XXXXXXXXXX' },
 ]
 

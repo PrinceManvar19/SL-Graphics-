@@ -47,7 +47,7 @@ export function HeroSection() {
     <section id="hero" className="hero-light snap-section relative flex min-h-screen flex-col overflow-hidden pt-16">
       <div className="container-x grid flex-1 items-center gap-12 py-12 lg:grid-cols-[58%_42%] lg:py-10">
         <div className="relative z-10">
-          <p className="hero-eyebrow label mb-7">CREATIVE STUDIO / UP, INDIA</p>
+          <p className="hero-eyebrow label mb-7">INDEPENDENT CREATIVE STUDIO</p>
 
           <h1 className="font-display uppercase leading-[0.84]">
             <CharReveal text="VISUALS" as="span" className="hero-line block text-[56px] text-[var(--text)] md:text-[110px] xl:text-[140px]" />

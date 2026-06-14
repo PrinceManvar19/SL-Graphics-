@@ -34,7 +34,7 @@ export function IntroLoader() {
       <div className="intro-loader-content">
         <span className="intro-loader-line" />
         <span className="intro-loader-logo-wrap">
-          <Image src="/sl-logo-cutout.png" alt="" width={90} height={90} priority className="intro-loader-logo" />
+          <Image src="/sl-logo-cutout.png" alt="" width={170} height={170} priority className="intro-loader-logo" />
         </span>
         <p className="intro-loader-name">SL GRAPHICS</p>
         <span className="intro-loader-dot" />

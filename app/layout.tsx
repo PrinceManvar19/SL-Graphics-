@@ -20,7 +20,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'SL Graphics - Creative Studio',
-  description: 'Logo design, branding, posters, banners, and video editing from UP, India.',
+  description: 'Logo design, branding, posters, banners, and video editing for ambitious brands.',
   generator: 'v0.app',
   icons: {
     icon: '/sl-logo.png',
@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${bebasNeue.variable} ${inter.variable}`}>
+    <html lang="en" className={`${bebasNeue.variable} ${inter.variable}`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
