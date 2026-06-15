@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { CONTACT } from '@/lib/contact'
 
 export function SiteEffects() {
   const progressRef = useRef<HTMLDivElement>(null)
@@ -69,7 +70,7 @@ export function SiteEffects() {
     <>
       <div ref={progressRef} className="scroll-progress" />
       <a
-        href="https://wa.me/91XXXXXXXXXX"
+        href={CONTACT.whatsapp}
         target="_blank"
         rel="noreferrer"
         aria-label="Chat on WhatsApp"

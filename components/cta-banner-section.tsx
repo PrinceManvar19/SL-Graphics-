@@ -1,4 +1,5 @@
 import { ScrollReveal } from './scroll-reveal'
+import { CONTACT } from '@/lib/contact'
 
 export function CTABannerSection() {
   return (
@@ -18,7 +19,7 @@ export function CTABannerSection() {
               Start Project
             </a>
             <a
-              href="https://wa.me/91XXXXXXXXXX"
+              href={CONTACT.whatsapp}
               target="_blank"
               rel="noreferrer"
               data-cursor="hover"

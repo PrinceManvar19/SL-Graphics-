@@ -6,18 +6,18 @@ import { ScrollReveal } from './scroll-reveal'
 const testimonials = [
   {
     name: 'Amit Verma',
-    company: 'Local Retail Brand',
-    quote: 'The poster campaign looked premium and brought real walk-ins. Clean work, fast delivery, no confusion.',
+    company: 'Radhe Traders, Lucknow',
+    quote: 'Logo delivered in 4 days. Three strong concepts, no back-and-forth needed. Our store branding now looks like it belongs in a mall.',
   },
   {
     name: 'Priya Singh',
-    company: 'Creator Channel',
-    quote: 'Our reels finally felt sharp. Captions, cuts, sound, everything worked better for Indian audiences.',
+    company: 'Creator Channel, Delhi',
+    quote: 'Reels finally feel professional. Hook, captions, transitions — all sharp. Views doubled in 2 weeks.',
   },
   {
     name: 'Rahul Mishra',
-    company: 'Startup Founder',
-    quote: 'SL Graphics gave us a logo and visual system that made the brand feel serious from day one.',
+    company: 'CloudFit, Pune',
+    quote: 'Got a full brand kit — logo, colors, fonts, business card layout. Felt like working with a proper agency, not a freelancer.',
   },
 ]
 

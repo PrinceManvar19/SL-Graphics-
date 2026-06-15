@@ -4,59 +4,110 @@ import { useState } from 'react'
 import { CharReveal } from './char-reveal'
 import { ScrollReveal } from './scroll-reveal'
 
+type Category = 'logo' | 'video' | 'poster' | 'brand'
+
 type Project = {
   title: string
   type: string
-  category: 'Logo' | 'Video' | 'Poster' | 'Brand'
-  gradient: string
-  initials?: string
+  category: Category
 }
 
 const projects: Project[] = [
-  { title: 'Radhe Traders', type: 'Wholesale Brand', category: 'Logo', initials: 'RT', gradient: 'linear-gradient(135deg, #1A0505, #3D0A0A)' },
-  { title: 'Viral Reels Pack', type: 'Creator Studio', category: 'Video', gradient: 'linear-gradient(135deg, #050A1A, #0A1A3D)' },
-  { title: 'Diwali Campaign', type: 'Retail Poster', category: 'Poster', gradient: 'linear-gradient(135deg, #051A05, #0A3D0A)' },
-  { title: 'CloudFit Identity', type: 'Fitness Startup', category: 'Brand', gradient: 'linear-gradient(135deg, #0F051A, #1A0A3D)' },
-  { title: 'Highway Banner', type: 'Real Estate', category: 'Poster', gradient: 'linear-gradient(135deg, #1A100A, #3D2010)' },
-  { title: 'Wedding Film Edit', type: 'Film Production', category: 'Video', gradient: 'linear-gradient(135deg, #050F1A, #0A2040)' },
+  { title: 'Radhe Traders', type: 'Wholesale Brand', category: 'logo' },
+  { title: 'Viral Reels Pack', type: 'Creator Studio', category: 'video' },
+  { title: 'Diwali Campaign', type: 'Retail Poster', category: 'poster' },
+  { title: 'CloudFit Identity', type: 'Fitness Startup', category: 'brand' },
+  { title: 'Highway Banner', type: 'Real Estate', category: 'poster' },
+  { title: 'Wedding Film Edit', type: 'Film Production', category: 'video' },
 ]
 
-const filters = ['All', 'Logo', 'Video', 'Poster', 'Brand']
+const filters = ['all', 'logo', 'video', 'poster', 'brand'] as const
 
-function ProjectForeground({ project }: { project: Project }) {
-  if (project.category === 'Logo') {
-    return <div className="font-display text-[88px] leading-none text-white/82 md:text-[104px]">{project.initials}</div>
-  }
-
-  if (project.category === 'Video') {
+function ProjectVisual({ title }: { title: string }) {
+  if (title === 'Radhe Traders') {
     return (
-      <div className="grid h-20 w-20 place-items-center rounded-full border border-white/30 bg-white/10 text-[34px] text-white backdrop-blur-sm">
-        <span className="translate-x-1">▶</span>
+      <div className="absolute inset-0 grid place-items-center bg-[#1a0a0a] bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:10px_10px]">
+        <div className="relative h-28 w-36" aria-label="RT monogram">
+          <span className="absolute left-2 top-2 h-24 w-20 border-[10px] border-[#f5f0e8]" />
+          <span className="absolute right-2 top-2 h-10 w-24 bg-[#f5f0e8]" />
+          <span className="absolute bottom-2 right-9 h-24 w-10 bg-[#f5f0e8]" />
+          <span className="absolute inset-0 grid place-items-center font-display text-6xl font-bold tracking-[-0.08em] text-[#1a0a0a]">RT</span>
+        </div>
       </div>
     )
   }
 
-  if (project.category === 'Poster') {
+  if (title === 'Viral Reels Pack') {
     return (
-      <div className="absolute inset-8 border border-white/45">
-        <div className="absolute left-4 top-4 h-10 w-16 border-t border-l border-white/35" />
-        <div className="absolute bottom-4 right-4 h-10 w-16 border-r border-b border-white/35" />
+      <div className="absolute inset-0 grid place-items-center bg-[#050d1a]">
+        <div className="relative grid h-28 w-28 place-items-center">
+          {[0, 1, 2].map((index) => (
+            <span key={index} className={`video-pulse video-pulse-${index} absolute h-20 w-20 rounded-full border border-[#3b8bd4]`} />
+          ))}
+          <svg viewBox="0 0 64 64" className="relative z-10 h-16 w-16" aria-label="Play">
+            <path d="M23 16 49 32 23 48Z" fill="#3b8bd4" />
+          </svg>
+        </div>
+      </div>
+    )
+  }
+
+  if (title === 'Diwali Campaign') {
+    return (
+      <div className="absolute inset-0 grid place-items-center bg-[#071a0f]">
+        <div className="grid h-[75%] w-[70%] place-items-center border border-[#d4af37]">
+          <div className="grid grid-cols-2 gap-7">
+            {[0, 1, 2, 3].map((index) => (
+              <span key={index} className={`h-10 w-10 rotate-45 border border-[#d4af37] ${index % 2 === 0 ? 'bg-[#d4af37]' : ''}`} />
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (title === 'CloudFit Identity') {
+    return (
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-8 bg-[#0d0a1a]">
+        <div className="relative h-20 w-20 rotate-45 border-2 border-[#7f77dd]">
+          <span className="absolute left-1/2 top-1/2 h-px w-28 -translate-x-1/2 -translate-y-1/2 -rotate-45 bg-[#7f77dd]" />
+        </div>
+        <div className="flex gap-3">
+          <span className="h-4 w-4 rounded-full bg-[#5d55b8]" />
+          <span className="h-4 w-4 rounded-full bg-[#7f77dd]" />
+          <span className="h-4 w-4 rounded-full bg-[#aaa4f0]" />
+        </div>
+        <span className="text-[10px] uppercase tracking-[0.28em] text-[#c8c6d3]">GT Walsheim</span>
+      </div>
+    )
+  }
+
+  if (title === 'Highway Banner') {
+    return (
+      <div className="absolute inset-0 grid place-items-center bg-[#120d04]">
+        <div className="flex h-[40%] w-[85%] flex-col justify-center gap-4 border border-[#c97d2e] px-8">
+          <span className="h-3 w-[70%] bg-[#c97d2e]/60" />
+          <span className="h-3 w-[50%] bg-[#c97d2e]/60" />
+          <span className="h-3 w-[30%] bg-[#c97d2e]/60" />
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="relative h-24 w-24">
-      <div className="absolute inset-0 rotate-45 border border-white/35 bg-white/10" />
-      <div className="absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--brand)]" />
-      <div className="absolute left-1/2 top-1/2 h-4 w-16 -translate-x-1/2 -translate-y-1/2 bg-white/80" />
+    <div className="absolute inset-0 grid place-items-center bg-[#04081a]">
+      <div className="flex w-[86%] border-y border-[#e8d5b0] py-4">
+        {[0, 1, 2, 3, 4].map((index) => (
+          <span key={index} className={`film-frame film-frame-${index} aspect-[4/3] flex-1 border border-[#e8d5b0] bg-[#e8d5b0]/10`} />
+        ))}
+      </div>
     </div>
   )
 }
 
 export function PortfolioSection() {
-  const [activeFilter, setActiveFilter] = useState('All')
-  const filteredProjects = projects.filter((project) => activeFilter === 'All' || project.category === activeFilter)
+  const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]>('all')
+  const filteredProjects = projects.filter((project) => activeFilter === 'all' || project.category === activeFilter)
 
   return (
     <section id="work" className="snap-section min-h-screen bg-[var(--surface-alt)] py-24">
@@ -91,16 +142,13 @@ export function PortfolioSection() {
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project, index) => (
             <ScrollReveal key={project.title} delay={index * 0.04}>
-              <article className="portfolio-card group overflow-hidden border border-[var(--border)] bg-white">
+              <article data-category={project.category} className="portfolio-card group overflow-hidden border border-[var(--border)] bg-white">
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <div className="card-visual absolute inset-0" style={{ background: project.gradient }}>
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(242,240,236,0.14),transparent_58%)]" />
-                    <div className="absolute inset-0 grid place-items-center">
-                      <ProjectForeground project={project} />
-                    </div>
+                  <div className="card-visual absolute inset-0">
+                    <ProjectVisual title={project.title} />
                   </div>
                   <div className="card-overlay">
-                    <span className="text-sm font-medium text-white">View Project →</span>
+                    <span className="text-sm font-medium text-white">View Project &rarr;</span>
                   </div>
                 </div>
                 <div className="border-t border-[var(--border)] p-5">

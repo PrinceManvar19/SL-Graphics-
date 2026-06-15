@@ -1,10 +1,11 @@
 import Image from 'next/image'
+import { CONTACT } from '@/lib/contact'
 
 const navItems = ['Work', 'Services', 'Process', 'Contact']
 const socials = [
-  { label: 'Instagram', href: '#', icon: InstagramIcon },
-  { label: 'YouTube', href: '#', icon: YouTubeIcon },
-  { label: 'WhatsApp', href: 'https://wa.me/91XXXXXXXXXX', icon: WhatsAppIcon },
+  { label: 'Instagram', href: CONTACT.instagram, icon: InstagramIcon },
+  { label: 'WhatsApp', href: CONTACT.whatsapp, icon: WhatsAppIcon },
+  { label: 'Behance', href: CONTACT.behance, icon: BehanceIcon },
 ]
 
 function InstagramIcon() {
@@ -17,21 +18,12 @@ function InstagramIcon() {
   )
 }
 
-function YouTubeIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-      <path
-        d="M21 8.2a3 3 0 0 0-2.1-2.1C17 5.6 12 5.6 12 5.6s-5 0-6.9.5A3 3 0 0 0 3 8.2 31 31 0 0 0 2.5 12a31 31 0 0 0 .5 3.8 3 3 0 0 0 2.1 2.1c1.9.5 6.9.5 6.9.5s5 0 6.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-3.8 31 31 0 0 0-.5-3.8Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <path d="m10.2 15 4.7-3-4.7-3v6Z" fill="currentColor" />
-    </svg>
-  )
+function WhatsAppIcon() {
+  return <i className="fa-brands fa-whatsapp text-xl" aria-hidden="true" />
 }
 
-function WhatsAppIcon() {
-  return <i className="fa-brands fa-whatsapp text-xl" style={{ color: 'rgb(255, 255, 255)' }} aria-hidden="true" />
+function BehanceIcon() {
+  return <i className="fa-brands fa-behance text-xl" aria-hidden="true" />
 }
 
 export function Footer() {

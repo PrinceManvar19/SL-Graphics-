@@ -2,12 +2,12 @@ import { CharReveal } from './char-reveal'
 import { ScrollReveal } from './scroll-reveal'
 
 const services = [
-  { title: 'Logo Design', description: 'Distinct marks built for recall, trust, and daily use.', tag: 'Identity' },
-  { title: 'Brand Identity', description: 'Color, type, rules, and systems that keep every touchpoint consistent.', tag: 'System' },
-  { title: 'Poster Design', description: 'Event and campaign posters made to stop the scroll.', tag: 'Print' },
-  { title: 'Banner Design', description: 'Digital and outdoor banners that turn attention into action.', tag: 'Campaign' },
-  { title: 'Reel Editing', description: 'Short-form edits tuned for rhythm, retention, captions, and shareability.', tag: 'Video' },
-  { title: 'Video Production', description: 'YouTube edits, wedding films, and brand stories shaped with polish.', tag: 'Film' },
+  { title: 'Logo Design', description: 'Distinct marks built for recall, trust, and daily use.', tag: 'Identity', delivery: '3–5 days' },
+  { title: 'Brand Identity', description: 'Color, type, rules, and systems that keep every touchpoint consistent.', tag: 'System', delivery: '7–10 days' },
+  { title: 'Poster Design', description: 'Event and campaign posters made to stop the scroll.', tag: 'Print', delivery: '24–48 hrs' },
+  { title: 'Banner Design', description: 'Digital and outdoor banners that turn attention into action.', tag: 'Campaign', delivery: '24–48 hrs' },
+  { title: 'Reel Editing', description: 'Short-form edits tuned for rhythm, retention, captions, and shareability.', tag: 'Video', delivery: '48–72 hrs' },
+  { title: 'Video Production', description: 'YouTube edits, wedding films, and brand stories shaped with polish.', tag: 'Film', delivery: '5–7 days' },
 ]
 
 export function ServicesSection() {
@@ -39,6 +39,9 @@ export function ServicesSection() {
                   </span>
                   <span className="service-description mt-2 block text-sm text-[var(--secondary)]">
                     {service.description}
+                  </span>
+                  <span className="mt-3 inline-flex rounded-full bg-[rgba(224,32,32,0.1)] px-3 py-1 text-[10px] font-medium uppercase tracking-[0.14em] text-[var(--brand)]">
+                    Delivery: {service.delivery}
                   </span>
                 </span>
                 <span className="w-fit rounded-[4px] border border-[var(--border)] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--muted)]">

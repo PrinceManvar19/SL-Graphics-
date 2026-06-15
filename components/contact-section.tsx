@@ -1,20 +1,36 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
+import { CONTACT } from '@/lib/contact'
 import { CharReveal } from './char-reveal'
 import { ScrollReveal } from './scroll-reveal'
 
 const details = [
-  { label: 'Email', value: 'hello@slgraphics.in', href: 'mailto:hello@slgraphics.in' },
-  { label: 'Phone', value: '+91 98XXX XXXXX', href: 'tel:+9198XXXXXXXX' },
+  { label: 'Email', value: CONTACT.email, href: `mailto:${CONTACT.email}` },
+  { label: 'Phone', value: CONTACT.phoneDisplay, href: CONTACT.phoneHref },
   { label: 'Availability', value: 'Working worldwide' },
-  { label: 'WhatsApp', value: 'Chat on WhatsApp', href: 'https://wa.me/91XXXXXXXXXX' },
+  { label: 'WhatsApp', value: 'Chat on WhatsApp', href: CONTACT.whatsapp },
 ]
 
 export function ContactSection() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [serviceError, setServiceError] = useState(false)
   const [formError, setFormError] = useState('')
+  const feedbackTimer = useRef<number | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (feedbackTimer.current) window.clearTimeout(feedbackTimer.current)
+    }
+  }, [])
+
+  const resetFeedbackAfter = (delay: number) => {
+    if (feedbackTimer.current) window.clearTimeout(feedbackTimer.current)
+    feedbackTimer.current = window.setTimeout(() => {
+      setStatus('idle')
+      setFormError('')
+    }, delay)
+  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -29,7 +45,8 @@ export function ContactSection() {
     const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT
     if (!endpoint) {
       setStatus('error')
-      setFormError('Form delivery is not configured yet. Please use email or WhatsApp.')
+      setFormError('Something went wrong.')
+      resetFeedbackAfter(3000)
       return
     }
 
@@ -47,10 +64,11 @@ export function ContactSection() {
       if (!response.ok) throw new Error('Unable to send message')
       setStatus('sent')
       form.reset()
-      window.setTimeout(() => setStatus('idle'), 2500)
+      resetFeedbackAfter(6000)
     } catch {
       setStatus('error')
-      setFormError('Message could not be sent. Please try again or contact us directly.')
+      setFormError('Something went wrong.')
+      resetFeedbackAfter(3000)
     } finally {
       window.dispatchEvent(new Event('sl-loading-end'))
     }
@@ -89,7 +107,7 @@ export function ContactSection() {
           </div>
 
           <a
-            href="https://wa.me/91XXXXXXXXXX"
+            href={CONTACT.whatsapp}
             target="_blank"
             rel="noreferrer"
             data-cursor="hover"
@@ -154,10 +172,22 @@ export function ContactSection() {
             >
               {status === 'sending' && <span className="submit-spinner" />}
               {(status === 'idle' || status === 'error') && 'SEND IT →'}
-              {status === 'sending' && 'SENDING...'}
+              {status === 'sending' && 'Sending...'}
               {status === 'sent' && '✓ SENT!'}
             </button>
-            {formError && <p className="text-sm text-[var(--brand)]" role="alert">{formError}</p>}
+            {status === 'sent' && (
+              <p className="text-sm font-medium text-[#16803A]" role="status">
+                ✓ Message sent! We&apos;ll get back to you within 24 hours.
+              </p>
+            )}
+            {formError && (
+              <p className="text-sm text-[var(--brand)]" role="alert">
+                {formError}{' '}
+                <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="font-medium underline">
+                  WhatsApp us directly &rarr;
+                </a>
+              </p>
+            )}
           </form>
         </ScrollReveal>
       </div>
