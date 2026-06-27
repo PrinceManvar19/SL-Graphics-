@@ -86,7 +86,7 @@ export function PageTransition() {
       <div className={`transition-panel phase-${phase}`} aria-hidden="true">
         <div className="transition-mark">
           <span className="transition-mark-line" />
-          <Image src="/sl-logo-cutout.png" alt="" width={90} height={90} className="transition-logo" />
+          <Image src="/SL-logo-new.png" alt="" width={90} height={90} className="transition-logo" />
         </div>
       </div>
     </>

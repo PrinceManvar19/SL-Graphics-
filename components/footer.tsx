@@ -34,7 +34,7 @@ export function Footer() {
       <div className="container-x">
         <div className="grid items-center gap-8 border-b border-[var(--brand)] pb-10 md:grid-cols-[1fr_auto_1fr]">
           <div>
-            <Image src="/sl-logo.png" alt="SL Graphics" width={120} height={40} className="h-10 w-auto object-contain" />
+            <Image src="/SL-logo-new.png" alt="SL Graphics" width={120} height={40} className="h-10 w-auto object-contain" />
             <p className="mt-3 text-sm text-[#CCCCCC]">Bold visuals. Real impact.</p>
           </div>
 

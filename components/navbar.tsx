@@ -30,7 +30,7 @@ export function Navbar() {
       <div className="container-x flex h-16 items-center justify-between">
         <Link href="/" aria-label="SL Graphics home" className="navbar-brand flex items-center gap-3" data-cursor="hover">
           <span className="navbar-logo-crop grid h-9 w-9 place-items-center overflow-hidden rounded-full">
-            <Image src="/sl-logo-cutout.png" alt="" width={48} height={48} className="h-9 w-9 object-contain" />
+            <Image src="/SL-logo-new.png" alt="" width={48} height={48} className="h-9 w-9 object-contain" />
           </span>
           <span className="font-display text-xl uppercase tracking-[0.08em] text-[#171717]">SL Graphics</span>
         </Link>

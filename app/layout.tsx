@@ -1,58 +1,12 @@
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
-import { Bebas_Neue, Inter } from 'next/font/google'
-import { ClientCursor } from '@/components/client-cursor'
-import { IntroLoader } from '@/components/intro-loader'
-import { PageTransition } from '@/components/page-transition'
+import { DM_Sans, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 
-const bebasNeue = Bebas_Neue({
-  variable: '--font-display',
-  subsets: ['latin'],
-  weight: '400',
-})
+const display = Space_Grotesk({ variable: '--font-display', subsets: ['latin'], weight: ['600', '700'] })
+const body = DM_Sans({ variable: '--font-body', subsets: ['latin'], weight: ['400', '500'] })
 
-const inter = Inter({
-  variable: '--font-body',
-  subsets: ['latin'],
-  weight: ['400', '500'],
-})
+export const metadata: Metadata = { title: 'SL Graphics — Visuals That Sell', description: 'Logo design, brand identity, posters, reels and cinematic video production.', icons: { icon: '/SL-logo-new.png' } }
 
-export const metadata: Metadata = {
-  title: 'SL Graphics - Creative Studio',
-  description: 'Logo design, branding, posters, banners, and video editing for ambitious brands.',
-  generator: 'v0.app',
-  icons: {
-    icon: '/sl-logo.png',
-    apple: '/sl-logo.png',
-  },
-}
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  return (
-    <html lang="en" className={`${bebasNeue.variable} ${inter.variable}`} suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "try{if(sessionStorage.getItem('introSeen'))document.documentElement.classList.add('intro-seen','site-loaded','loader-done')}catch(e){}",
-          }}
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        />
-      </head>
-      <body>
-        <ClientCursor />
-        <IntroLoader />
-        <PageTransition />
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
-      </body>
-    </html>
-  )
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <html lang="en" className={`${display.variable} ${body.variable}`}><body>{children}</body></html>
 }
