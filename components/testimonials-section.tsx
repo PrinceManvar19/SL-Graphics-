@@ -3,47 +3,40 @@
 import { useEffect, useState } from 'react'
 import { ScrollReveal } from './scroll-reveal'
 
-const testimonials = [
-  {
-    name: 'Amit Verma',
-    company: 'Radhe Traders, Lucknow',
-    quote: 'Logo delivered in 4 days. Three strong concepts, no back-and-forth needed. Our store branding now looks like it belongs in a mall.',
-  },
-  {
-    name: 'Priya Singh',
-    company: 'Creator Channel, Delhi',
-    quote: 'Reels finally feel professional. Hook, captions, transitions — all sharp. Views doubled in 2 weeks.',
-  },
-  {
-    name: 'Rahul Mishra',
-    company: 'CloudFit, Pune',
-    quote: 'Got a full brand kit — logo, colors, fonts, business card layout. Felt like working with a proper agency, not a freelancer.',
-  },
-]
+export type Testimonial = {
+  name: string
+  company: string
+  quote: string
+}
 
-export function TestimonialsSection() {
+interface TestimonialsSectionProps {
+  testimonials: Testimonial[]
+}
+
+export function TestimonialsSection({ testimonials }: TestimonialsSectionProps) {
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
 
   useEffect(() => {
-    if (paused) return
+    if (paused || testimonials.length < 2) return
 
     const interval = window.setInterval(() => {
       setActive((current) => (current + 1) % testimonials.length)
     }, 4000)
 
     return () => window.clearInterval(interval)
-  }, [paused])
+  }, [paused, testimonials.length])
 
   return (
     <section className="snap-section flex min-h-[80vh] items-center bg-[var(--surface-alt)] py-24">
       <div className="container-x">
         <ScrollReveal className="mb-16 text-center">
+          <p className="label mb-5">/ KIND WORDS</p>
           <h2 className="font-display text-7xl uppercase leading-none text-[var(--text)] md:text-[80px]">
             CLIENTS DON&apos;T LIE.
           </h2>
           <div className="mt-4 text-xl text-[var(--brand)]" aria-label="5 star rating">
-            ★★★★★
+            <span aria-hidden="true">*****</span>
           </div>
         </ScrollReveal>
 
@@ -52,10 +45,10 @@ export function TestimonialsSection() {
             <ScrollReveal key={testimonial.name} delay={index * 0.15}>
               <figure className="h-full rounded-xl border border-[var(--border)] bg-white p-8">
                 <div className="mb-6 text-[var(--brand)]" aria-label="5 star rating">
-                  ★★★★★
+                  <span aria-hidden="true">*****</span>
                 </div>
                 <blockquote className="text-[17px] italic leading-relaxed text-[var(--secondary)]">
-                  “{testimonial.quote}”
+                  &quot;{testimonial.quote}&quot;
                 </blockquote>
                 <figcaption className="mt-8">
                   <div className="font-display text-sm uppercase text-[var(--text)]">{testimonial.name}</div>
@@ -78,14 +71,14 @@ export function TestimonialsSection() {
               <figure
                 key={testimonial.name}
                 className={`testimonial-slide absolute inset-x-8 top-8 ${
-                  active === index ? 'translate-x-0 opacity-100' : 'translate-x-5 opacity-0 pointer-events-none'
+                  active === index ? 'translate-x-0 opacity-100' : 'pointer-events-none translate-x-5 opacity-0'
                 }`}
               >
                 <div className="mb-6 text-[var(--brand)]" aria-label="5 star rating">
-                  ★★★★★
+                  <span aria-hidden="true">*****</span>
                 </div>
                 <blockquote className="text-[17px] italic leading-relaxed text-[var(--secondary)]">
-                  “{testimonial.quote}”
+                  &quot;{testimonial.quote}&quot;
                 </blockquote>
                 <figcaption className="mt-8">
                   <div className="font-display text-sm uppercase text-[var(--text)]">{testimonial.name}</div>
@@ -100,11 +93,11 @@ export function TestimonialsSection() {
                 key={testimonial.name}
                 type="button"
                 data-cursor="hover"
-                className={`text-lg ${active === index ? 'text-[var(--brand)]' : 'text-[var(--muted)]'}`}
+                className={`grid h-8 w-8 place-items-center text-lg ${active === index ? 'text-[var(--brand)]' : 'text-[var(--muted)]'}`}
                 onClick={() => setActive(index)}
                 aria-label={`Show testimonial ${index + 1}`}
               >
-                {active === index ? '◆' : '◇'}
+                <span aria-hidden="true">{active === index ? 'x' : 'o'}</span>
               </button>
             ))}
           </div>

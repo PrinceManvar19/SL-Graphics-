@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Festive poster layout placeholder">
+  <rect width="1200" height="900" fill="#fffaf0"/>
+  <rect x="110" y="90" width="980" height="720" rx="26" fill="#123326"/>
+  <circle cx="600" cy="360" r="150" fill="#e95827"/>
+  <circle cx="600" cy="360" r="92" fill="#f6c65b"/>
+  <path d="M600 160 634 288 762 254 668 350 762 446 634 412 600 540 566 412 438 446 532 350 438 254 566 288Z" fill="#fff7ef"/>
+  <rect x="300" y="610" width="600" height="22" fill="#fff7ef"/>
+  <rect x="390" y="665" width="420" height="16" fill="#f6c65b"/>
+</svg>

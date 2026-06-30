@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Abstract logo presentation mockup">
+  <rect width="1200" height="900" fill="#fff7ef"/>
+  <rect x="70" y="70" width="1060" height="760" rx="28" fill="#171717"/>
+  <circle cx="1000" cy="190" r="88" fill="#e95827"/>
+  <path d="M270 590V280h220c120 0 194 62 194 157 0 66-36 115-96 139l132 14v88H586l-112-150h-82v150H270Zm122-247v97h93c46 0 75-18 75-49 0-30-29-48-75-48h-93Z" fill="#fff7ef"/>
+  <rect x="270" y="665" width="510" height="18" fill="#e95827"/>
+  <rect x="270" y="710" width="320" height="14" fill="#f4c69f"/>
+</svg>

@@ -1,6 +1,7 @@
 'use client'
 
 import { FormEvent, useEffect, useRef, useState } from 'react'
+import { MessageCircle } from 'lucide-react'
 import { CONTACT } from '@/lib/contact'
 import { CharReveal } from './char-reveal'
 import { ScrollReveal } from './scroll-reveal'
@@ -12,9 +13,28 @@ const details = [
   { label: 'WhatsApp', value: 'Chat on WhatsApp', href: CONTACT.whatsapp },
 ]
 
-export function ContactSection() {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
-  const [serviceError, setServiceError] = useState(false)
+type FormStatus = 'idle' | 'sending' | 'sent' | 'error'
+
+type FieldErrors = Partial<Record<'name' | 'email' | 'service' | 'message', string>>
+
+interface ContactSectionProps {
+  services: string[]
+}
+
+function validate(values: Record<string, string>) {
+  const errors: FieldErrors = {}
+
+  if (values.name.trim().length < 2) errors.name = 'Enter your name.'
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) errors.email = 'Enter a valid email.'
+  if (!values.service) errors.service = 'Choose a service.'
+  if (values.message.trim().length < 10) errors.message = 'Tell us a little more about the project.'
+
+  return errors
+}
+
+export function ContactSection({ services }: ContactSectionProps) {
+  const [status, setStatus] = useState<FormStatus>('idle')
+  const [errors, setErrors] = useState<FieldErrors>({})
   const [formError, setFormError] = useState('')
   const feedbackTimer = useRef<number | null>(null)
 
@@ -36,39 +56,38 @@ export function ContactSection() {
     event.preventDefault()
     const form = event.currentTarget
     const formData = new FormData(form)
-
-    if (!formData.get('service')) {
-      setServiceError(true)
-      return
+    const values = {
+      name: String(formData.get('name') || ''),
+      email: String(formData.get('email') || ''),
+      service: String(formData.get('service') || ''),
+      message: String(formData.get('message') || ''),
     }
+    const nextErrors = validate(values)
 
-    const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT
-    if (!endpoint) {
-      setStatus('error')
-      setFormError('Something went wrong.')
-      resetFeedbackAfter(3000)
-      return
-    }
-
-    setServiceError(false)
+    setErrors(nextErrors)
     setFormError('')
+    if (Object.keys(nextErrors).length > 0) return
+
     setStatus('sending')
     window.dispatchEvent(new Event('sl-loading-start'))
 
     try {
-      const response = await fetch(endpoint, {
+      const response = await fetch('/api/contact', {
         method: 'POST',
-        body: formData,
-        headers: { Accept: 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
       })
-      if (!response.ok) throw new Error('Unable to send message')
+      const result = (await response.json()) as { error?: string }
+
+      if (!response.ok) throw new Error(result.error || 'Unable to send message')
+
       setStatus('sent')
       form.reset()
       resetFeedbackAfter(6000)
-    } catch {
+    } catch (error) {
       setStatus('error')
-      setFormError('Something went wrong.')
-      resetFeedbackAfter(3000)
+      setFormError(error instanceof Error ? error.message : 'Something went wrong.')
+      resetFeedbackAfter(5000)
     } finally {
       window.dispatchEvent(new Event('sl-loading-end'))
     }
@@ -84,10 +103,14 @@ export function ContactSection() {
             <CharReveal text="TOGETHER." as="span" className="block text-[var(--brand)]" delay={0.1} />
           </h2>
 
+          <p className="mt-8 max-w-md text-[var(--secondary)]">
+            Have a project in mind? Tell us what you are building. We will bring the visual firepower.
+          </p>
+
           <div className="mt-12 space-y-5">
             {details.map((detail) => (
               <p key={detail.label} className="flex items-center gap-3 text-sm text-[var(--secondary)]">
-                <span className="text-[var(--brand)]">◆</span>
+                <span className="text-[var(--brand)]" aria-hidden="true">+</span>
                 <span className="min-w-20 text-[11px] uppercase tracking-[0.18em]">{detail.label}</span>
                 {detail.href ? (
                   <a
@@ -111,22 +134,44 @@ export function ContactSection() {
             target="_blank"
             rel="noreferrer"
             data-cursor="hover"
-            className="mt-10 inline-flex border-[1.5px] border-[var(--brand)] bg-transparent px-6 py-3 text-sm font-medium text-[var(--brand)] transition-colors duration-300 hover:bg-[var(--brand)] hover:text-white"
+            className="mt-10 inline-flex items-center gap-2 border-[1.5px] border-[var(--brand)] bg-transparent px-6 py-3 text-sm font-medium text-[var(--brand)] transition-colors duration-300 hover:bg-[var(--brand)] hover:text-white"
           >
-            WhatsApp CTA
+            <MessageCircle size={18} aria-hidden="true" />
+            Chat on WhatsApp
           </a>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <form onSubmit={handleSubmit} className="space-y-7 rounded-xl border border-[var(--border)] bg-white p-8">
+          <form onSubmit={handleSubmit} className="space-y-7 rounded-xl border border-[var(--border)] bg-white p-8" noValidate>
             <div className="field">
-              <input id="name" name="name" required placeholder=" " data-cursor="hover" />
+              <input
+                id="name"
+                name="name"
+                autoComplete="name"
+                placeholder=" "
+                aria-invalid={Boolean(errors.name)}
+                aria-describedby={errors.name ? 'name-error' : undefined}
+                data-cursor="hover"
+                onChange={() => setErrors((current) => ({ ...current, name: undefined }))}
+              />
               <label htmlFor="name">Your Name</label>
+              {errors.name && <p id="name-error" className="field-error">{errors.name}</p>}
             </div>
 
             <div className="field">
-              <input id="email" name="email" type="email" required placeholder=" " data-cursor="hover" />
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder=" "
+                aria-invalid={Boolean(errors.email)}
+                aria-describedby={errors.email ? 'email-error' : undefined}
+                data-cursor="hover"
+                onChange={() => setErrors((current) => ({ ...current, email: undefined }))}
+              />
               <label htmlFor="email">Email</label>
+              {errors.email && <p id="email-error" className="field-error">{errors.email}</p>}
             </div>
 
             <div className="field">
@@ -134,57 +179,60 @@ export function ContactSection() {
                 id="service"
                 name="service"
                 defaultValue=""
-                required
-                aria-invalid={serviceError}
-                aria-describedby={serviceError ? 'service-error' : undefined}
-                onChange={() => setServiceError(false)}
-                onInvalid={(event) => {
-                  event.preventDefault()
-                  setServiceError(true)
-                }}
+                aria-invalid={Boolean(errors.service)}
+                aria-describedby={errors.service ? 'service-error' : undefined}
                 data-cursor="hover"
+                onChange={() => setErrors((current) => ({ ...current, service: undefined }))}
               >
                 <option value="" disabled>
                   Select a service
                 </option>
-                <option>Logo Design</option>
-                <option>Brand Identity</option>
-                <option>Poster / Banner</option>
-                <option>Video Editing</option>
-                <option>Full Campaign</option>
+                {services.map((service) => (
+                  <option key={service}>{service}</option>
+                ))}
               </select>
               <label htmlFor="service">Service Type</label>
-              {serviceError && <p id="service-error" className="field-error">Please select a service</p>}
+              {errors.service && <p id="service-error" className="field-error">{errors.service}</p>}
             </div>
 
             <div className="field">
-              <textarea id="message" name="message" rows={5} required placeholder=" " data-cursor="hover" />
+              <textarea
+                id="message"
+                name="message"
+                rows={5}
+                placeholder=" "
+                aria-invalid={Boolean(errors.message)}
+                aria-describedby={errors.message ? 'message-error' : undefined}
+                data-cursor="hover"
+                onChange={() => setErrors((current) => ({ ...current, message: undefined }))}
+              />
               <label htmlFor="message">Message</label>
+              {errors.message && <p id="message-error" className="field-error">{errors.message}</p>}
             </div>
 
             <button
               type="submit"
               data-cursor="hover"
-              className={`inline-flex items-center gap-3 bg-[var(--brand)] px-8 py-[14px] font-display text-lg uppercase text-white transition duration-300 hover:bg-[var(--brand-hover)] active:scale-[0.97] ${
-                status === 'sent' ? 'bg-[#22C55E] hover:bg-[#22C55E]' : ''
+              className={`inline-flex items-center gap-3 bg-[var(--brand)] px-8 py-[14px] font-display text-lg uppercase text-white transition duration-300 hover:bg-[var(--brand-hover)] active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-70 ${
+                status === 'sent' ? 'bg-[#16803a] hover:bg-[#16803a]' : ''
               }`}
               disabled={status === 'sending'}
             >
-              {status === 'sending' && <span className="submit-spinner" />}
-              {(status === 'idle' || status === 'error') && 'SEND IT →'}
+              {status === 'sending' && <span className="submit-spinner" aria-hidden="true" />}
+              {(status === 'idle' || status === 'error') && 'SEND IT ->'}
               {status === 'sending' && 'Sending...'}
-              {status === 'sent' && '✓ SENT!'}
+              {status === 'sent' && 'Sent'}
             </button>
             {status === 'sent' && (
-              <p className="text-sm font-medium text-[#16803A]" role="status">
-                ✓ Message sent! We&apos;ll get back to you within 24 hours.
+              <p className="text-sm font-medium text-[#16803a]" role="status">
+                Message sent. We will get back to you within 24 hours.
               </p>
             )}
             {formError && (
               <p className="text-sm text-[var(--brand)]" role="alert">
                 {formError}{' '}
                 <a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="font-medium underline">
-                  WhatsApp us directly &rarr;
+                  WhatsApp us directly -&gt;
                 </a>
               </p>
             )}

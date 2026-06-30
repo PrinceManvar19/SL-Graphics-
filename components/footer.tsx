@@ -1,50 +1,34 @@
 import Image from 'next/image'
+import { ExternalLink, Heart } from 'lucide-react'
+import { FaWhatsapp } from 'react-icons/fa'
 import { CONTACT } from '@/lib/contact'
 
 const navItems = ['Work', 'Services', 'Process', 'Contact']
 const socials = [
-  { label: 'Instagram', href: CONTACT.instagram, icon: InstagramIcon },
-  { label: 'WhatsApp', href: CONTACT.whatsapp, icon: WhatsAppIcon },
-  { label: 'Behance', href: CONTACT.behance, icon: BehanceIcon },
+  { label: 'Instagram', href: CONTACT.instagram, icon: Heart },
+  { label: 'WhatsApp', href: CONTACT.whatsapp, icon: FaWhatsapp },
+  { label: 'Behance', href: CONTACT.behance, icon: ExternalLink },
 ]
-
-function InstagramIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <rect x="4" y="4" width="16" height="16" rx="4.5" />
-      <circle cx="12" cy="12" r="3.5" />
-      <circle cx="17" cy="7" r="0.8" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
-
-function WhatsAppIcon() {
-  return <i className="fa-brands fa-whatsapp text-xl" aria-hidden="true" />
-}
-
-function BehanceIcon() {
-  return <i className="fa-brands fa-behance text-xl" aria-hidden="true" />
-}
 
 export function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-[var(--brand)] bg-[#111111] py-10 text-[#CCCCCC]">
+    <footer className="border-t border-[var(--brand)] bg-[var(--text)] py-10 text-white">
       <div className="container-x">
-        <div className="grid items-center gap-8 border-b border-[var(--brand)] pb-10 md:grid-cols-[1fr_auto_1fr]">
+        <div className="grid items-center gap-8 border-b border-white/20 pb-10 md:grid-cols-[1fr_auto_1fr]">
           <div>
-            <Image src="/SL-logo-new.png" alt="SL Graphics" width={120} height={40} className="h-10 w-auto object-contain" />
-            <p className="mt-3 text-sm text-[#CCCCCC]">Bold visuals. Real impact.</p>
+            <Image src="/SL-logo-new.png" alt="SL Graphics brand mark" width={120} height={40} className="h-10 w-auto object-contain" />
+            <p className="mt-3 text-sm text-white/75">Bold visuals. Real impact.</p>
           </div>
 
-          <nav className="flex flex-wrap gap-6">
+          <nav className="flex flex-wrap gap-6" aria-label="Footer navigation">
             {navItems.map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
                 data-cursor="hover"
-                className="text-xs font-medium uppercase tracking-[0.15em] text-[#CCCCCC] transition-colors duration-300 hover:text-white"
+                className="text-xs font-medium uppercase tracking-[0.15em] text-white/75 transition-colors duration-300 hover:text-white"
               >
                 {item}
               </a>
@@ -63,17 +47,17 @@ export function Footer() {
                   rel={social.href.startsWith('https') ? 'noreferrer' : undefined}
                   aria-label={social.label}
                   data-cursor="hover"
-                  className="grid h-10 w-10 place-items-center border border-[#444444] text-[#CCCCCC] transition-colors duration-300 hover:border-white hover:text-white"
+                  className="grid h-10 w-10 place-items-center border border-white/25 text-white/75 transition-colors duration-300 hover:border-white hover:text-white"
                 >
-                  <Icon />
+                  <Icon size={19} aria-hidden="true" />
                 </a>
               )
             })}
           </div>
         </div>
 
-        <p className="pt-8 text-xs uppercase tracking-[0.15em] text-[#CCCCCC]">
-          © {year} SL Graphics. All rights reserved.
+        <p className="pt-8 text-xs uppercase tracking-[0.15em] text-white/65">
+          Copyright {year} SL Graphics. All rights reserved.
         </p>
       </div>
     </footer>

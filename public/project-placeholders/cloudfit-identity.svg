@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Brand identity system placeholder">
+  <rect width="1200" height="900" fill="#f6f4ff"/>
+  <rect x="90" y="100" width="390" height="300" rx="24" fill="#171717"/>
+  <rect x="520" y="100" width="590" height="300" rx="24" fill="#ded9ff"/>
+  <rect x="90" y="450" width="590" height="330" rx="24" fill="#fff"/>
+  <rect x="720" y="450" width="390" height="330" rx="24" fill="#7967e8"/>
+  <path d="M285 180 380 300H190Z" fill="#7967e8"/>
+  <circle cx="610" cy="250" r="70" fill="#7967e8"/>
+  <circle cx="760" cy="250" r="70" fill="#e95827"/>
+  <circle cx="910" cy="250" r="70" fill="#171717"/>
+  <rect x="160" y="545" width="390" height="20" fill="#171717"/>
+  <rect x="160" y="600" width="280" height="16" fill="#7967e8"/>
+</svg>

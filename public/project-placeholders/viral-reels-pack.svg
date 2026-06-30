@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Vertical video editing storyboard placeholder">
+  <rect width="1200" height="900" fill="#eef7fb"/>
+  <rect x="150" y="90" width="900" height="720" rx="34" fill="#0f2430"/>
+  <rect x="250" y="150" width="260" height="600" rx="26" fill="#e95827"/>
+  <rect x="470" y="150" width="260" height="600" rx="26" fill="#f4c69f"/>
+  <rect x="690" y="150" width="260" height="600" rx="26" fill="#2d7fa7"/>
+  <path d="M565 365 700 450 565 535Z" fill="#fff7ef"/>
+  <rect x="300" y="660" width="160" height="18" fill="#fff7ef" opacity=".75"/>
+  <rect x="740" y="220" width="150" height="18" fill="#fff7ef" opacity=".75"/>
+</svg>

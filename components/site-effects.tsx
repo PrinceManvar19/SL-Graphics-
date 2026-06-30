@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { ArrowUp, MessageCircle } from 'lucide-react'
 import { CONTACT } from '@/lib/contact'
 
 export function SiteEffects() {
@@ -76,8 +77,8 @@ export function SiteEffects() {
         aria-label="Chat on WhatsApp"
         className={`floating-whatsapp ${whatsAppVisible ? 'is-visible' : ''}`}
       >
-        <span className="wa-tooltip">Chat with us!</span>
-        <i className="fa-brands fa-whatsapp text-[26px]" style={{ color: 'rgb(255, 255, 255)' }} aria-hidden="true" />
+        <span className="wa-tooltip">Chat with us</span>
+        <MessageCircle size={26} aria-hidden="true" />
       </a>
       <a
         href="#top"
@@ -86,7 +87,7 @@ export function SiteEffects() {
           showTop ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'
         }`}
       >
-        &uarr;
+        <ArrowUp size={18} aria-hidden="true" />
       </a>
     </>
   )
