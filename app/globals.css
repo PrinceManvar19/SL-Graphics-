@@ -151,6 +151,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .ghost-number { opacity: .16; }
 .step-content { box-shadow: 0 14px 40px rgba(23,23,23,.05); }
 .testimonial-slide { transition: opacity .35s ease, transform .35s ease; }
+.testimonial-dot { display: block; width: 8px; height: 8px; border: 1px solid currentColor; border-radius: 50%; }
+.testimonial-dot.is-active { background: currentColor; }
 
 .field { position: relative; }
 .field input, .field select, .field textarea {
@@ -300,7 +302,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 @media (max-width: 760px) {
   .container-x { width: min(100% - 32px, 1180px); }
-  .hero-stats { flex-wrap: wrap; gap: 18px; divide: none; }
+  .hero-stats { flex-wrap: wrap; gap: 18px; }
   .hero-stat { padding-left: 0 !important; padding-right: 18px; border-left: 0 !important; }
   .service-row { grid-template-columns: 42px 1fr; }
 }

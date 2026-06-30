@@ -37,6 +37,7 @@ export function InkCanvas() {
     if (!canvas) return
     const context = canvas.getContext('2d')
     if (!context) return
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     let width = 0
     let height = 0
@@ -201,7 +202,7 @@ export function InkCanvas() {
       context.fill()
 
       context.globalAlpha = 1
-      frame = window.requestAnimationFrame(render)
+      if (!reduceMotion) frame = window.requestAnimationFrame(render)
     }
 
     const updatePointer = (event: PointerEvent) => {
@@ -229,7 +230,8 @@ export function InkCanvas() {
     canvas.addEventListener('pointermove', handlePointerMove)
     canvas.addEventListener('pointerleave', handlePointerLeave)
     resize()
-    frame = window.requestAnimationFrame(render)
+    if (reduceMotion) render(performance.now())
+    else frame = window.requestAnimationFrame(render)
 
     return () => {
       observer.disconnect()
@@ -241,7 +243,7 @@ export function InkCanvas() {
   }, [])
 
   return (
-    <div className="hero-logo-wrap particle-grid-visual solar-grid-panel" aria-label="Animated solar system bending a dot grid">
+    <div className="hero-logo-wrap particle-grid-visual solar-grid-panel" role="img" aria-label="Animated solar system bending a dot grid">
       <canvas ref={canvasRef} className="particle-grid-canvas" />
       <span className="particle-grid-label">ORBIT / MOTION / IMPACT</span>
       <span className="particle-grid-corner" aria-hidden="true" />

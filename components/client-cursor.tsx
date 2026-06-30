@@ -4,7 +4,10 @@ import { useEffect } from 'react'
 
 export function ClientCursor() {
   useEffect(() => {
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    if (
+      !window.matchMedia('(hover: hover) and (pointer: fine)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) return
 
     const dot = document.createElement('div')
     const ring = document.createElement('div')

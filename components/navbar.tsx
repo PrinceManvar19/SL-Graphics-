@@ -19,6 +19,18 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', updateScroll)
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : ''
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false)
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [isOpen])
+
   return (
     <header
       data-site-nav
@@ -30,7 +42,7 @@ export function Navbar() {
       <div className="container-x flex h-16 items-center justify-between">
         <Link href="/" aria-label="SL Graphics home" className="navbar-brand flex items-center gap-3" data-cursor="hover">
           <span className="navbar-logo-crop grid h-9 w-9 place-items-center overflow-hidden rounded-full">
-            <Image src="/SL-logo-new.png" alt="" width={48} height={48} className="h-9 w-9 object-contain" />
+            <Image src="/SL-logo-new.png" alt="SL Graphics brand mark" width={48} height={48} className="h-9 w-9 object-contain" />
           </span>
           <span className="font-display text-xl uppercase tracking-[0.08em] text-[#171717]">SL Graphics</span>
         </Link>
@@ -61,8 +73,9 @@ export function Navbar() {
           data-cursor="hover"
           className="grid h-10 w-10 place-items-center md:hidden"
           onClick={() => setIsOpen((current) => !current)}
-          aria-label="Toggle navigation"
+          aria-label={isOpen ? 'Close navigation' : 'Open navigation'}
           aria-expanded={isOpen}
+          aria-controls="mobile-navigation"
         >
           <span className="relative block h-3 w-6">
             <span className={`absolute left-0 top-0 h-px w-6 bg-[#111111] transition-transform duration-300 ${isOpen ? 'translate-y-[6px] rotate-45' : ''}`} />
@@ -72,6 +85,8 @@ export function Navbar() {
       </div>
 
       <div
+        id="mobile-navigation"
+        aria-hidden={!isOpen}
         className={`fixed inset-0 z-[-1] bg-white transition-all duration-300 md:hidden ${
           isOpen ? 'visible opacity-100' : 'invisible opacity-0'
         }`}

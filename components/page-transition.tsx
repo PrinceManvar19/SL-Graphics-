@@ -62,6 +62,8 @@ export function PageTransition() {
       if (!anchor || anchor.target === '_blank' || anchor.hasAttribute('download')) return
       const url = new URL(anchor.href, window.location.href)
       if (url.origin !== window.location.origin || (url.pathname === window.location.pathname && !url.hash)) return
+      if (url.pathname === window.location.pathname && url.hash) return
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
       event.preventDefault()
       navigate(url)
     }

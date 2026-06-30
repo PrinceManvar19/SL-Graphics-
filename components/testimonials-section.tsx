@@ -18,7 +18,7 @@ export function TestimonialsSection({ testimonials }: TestimonialsSectionProps) 
   const [paused, setPaused] = useState(false)
 
   useEffect(() => {
-    if (paused || testimonials.length < 2) return
+    if (paused || testimonials.length < 2 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const interval = window.setInterval(() => {
       setActive((current) => (current + 1) % testimonials.length)
@@ -97,7 +97,7 @@ export function TestimonialsSection({ testimonials }: TestimonialsSectionProps) 
                 onClick={() => setActive(index)}
                 aria-label={`Show testimonial ${index + 1}`}
               >
-                <span aria-hidden="true">{active === index ? 'x' : 'o'}</span>
+                <span className={`testimonial-dot ${active === index ? 'is-active' : ''}`} aria-hidden="true" />
               </button>
             ))}
           </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useState } from 'react'
 import { CharReveal } from './char-reveal'
 import { ScrollReveal } from './scroll-reveal'
@@ -24,6 +24,7 @@ const filters = ['all', 'logo', 'video', 'poster', 'brand'] as const
 
 export function PortfolioSection({ projects }: PortfolioSectionProps) {
   const [activeFilter, setActiveFilter] = useState<(typeof filters)[number]>('all')
+  const reduceMotion = useReducedMotion()
   const filteredProjects = projects.filter((project) => activeFilter === 'all' || project.category === activeFilter)
 
   return (
@@ -57,16 +58,16 @@ export function PortfolioSection({ projects }: PortfolioSectionProps) {
           </div>
         </ScrollReveal>
 
-        <motion.div layout className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <motion.div layout={!reduceMotion} className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => (
               <motion.article
-                layout
+                layout={!reduceMotion}
                 key={project.title}
-                initial={{ opacity: 0, y: 24, scale: 0.98 }}
+                initial={reduceMotion ? false : { opacity: 0, y: 24, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.96 }}
-                transition={{ duration: 0.35, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }}
+                exit={reduceMotion ? undefined : { opacity: 0, y: 20, scale: 0.96 }}
+                transition={reduceMotion ? { duration: 0 } : { duration: 0.35, delay: index * 0.03, ease: [0.22, 1, 0.36, 1] }}
                 data-category={project.category}
                 className="portfolio-card group overflow-hidden border border-[var(--border)] bg-white"
               >
@@ -79,7 +80,7 @@ export function PortfolioSection({ projects }: PortfolioSectionProps) {
                     className="object-cover transition duration-700 ease-out group-hover:scale-105"
                   />
                   <div className="card-overlay">
-                    <span className="text-sm font-medium text-white">View Project -&gt;</span>
+                    <span className="text-sm font-medium text-white">Project preview</span>
                   </div>
                 </div>
                 <div className="border-t border-[var(--border)] p-5">

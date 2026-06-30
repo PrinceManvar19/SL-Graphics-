@@ -8,7 +8,7 @@ export function IntroLoader() {
   const [exiting, setExiting] = useState(false)
 
   useEffect(() => {
-    if (window.sessionStorage.getItem('introSeen')) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.sessionStorage.getItem('introSeen')) {
       setVisible(false)
       document.documentElement.classList.add('site-loaded', 'loader-done')
       return
